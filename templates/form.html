@@ -1,5 +1,5 @@
 <h1>Ajout d'un event</h1>
-<form>
+<form method="POST" action="/send">
     <label for="ev_title">Title: </label><input type="text" id="ev_title" name="ev_title" placeholder="Title" /><br/>
     <label for="ev_tags">Tags: </label><input type="text" id="ev_tags" name="ev_tags" placeholder="tag, tag, tag" /><br/>
     <label for="ev_from">Date from: </label><input type="text" id="ev_from" name="ev_from" placeholder="" /><br/>
@@ -11,4 +11,8 @@
     <label for="ev_description">Description: </label><br/>
         <textarea id="ev_description" id="ev_description"></textarea><br/>
     <input type="hidden" id="ev_twitter" name="ev_twitter" />
+
+    <input type="submit" value="Envoyer" name="Submit" />
+    <input type="reset" value="Effacer" />
+
 </form>
