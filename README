@@ -3,3 +3,10 @@ Events
 
 Publish FIXME events on all the platforms
 
+Installation
+------------
+
+* Install the latest stable flask
+
+   apt-get install python-pip
+   pip install flask
