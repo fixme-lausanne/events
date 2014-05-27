@@ -1,7 +1,7 @@
 <h1>Ajout d'un event</h1>
 <h2>event sent to:</h2>
 <ul>
-{% for service in services %}
+{% for service in data.services %}
     <li><a href="{{ service.url }}">{{ service.name }}</a></li>
 {% endfor %}
 </ul>
