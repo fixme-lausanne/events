@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 
-from flask import Flask, render_template, request, url_for
+from flask import Flask, render_template, request, url_for, redirect
+import requests
 app = Flask(__name__)
 
 @app.route('/')
@@ -10,13 +11,12 @@ def home():
         'css': url_for('static', filename='style.css'),
     })
 
-@app.route('/send', methods=['POST'])
+@app.route('/send', methods=['POST', 'GET'])
 def send():
     services = []
     if request.method == 'POST':
         data = {
             'title': request.form['ev_title'],
-            'tags': request.form['ev_tags'],
             'date_from': request.form['ev_date_from'],
             'date_to': request.form['ev_date_to'],
             'time_from': request.form['ev_time_from'],
@@ -29,11 +29,12 @@ def send():
             'twitter': request.form['ev_twitter'],
         }
         services.append(send_techup(data))
-    return render_template('send.html', data={
-        'services': services,
-    })
+        return render_template('send.html', data={
+            'services': services,
+        })
+    return redirect('/')
 
-def send_techup():
+def send_techup(data):
     return {'name': 'techup', 'url': 'http://google.com'}
 
 if __name__ == '__main__':
