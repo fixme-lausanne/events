@@ -13,3 +13,8 @@ facebook = {}
 # Google+
 gplus = {}
 
+# Fixme.ch
+fixme = {
+    'civicrm_site_key': '',
+    'civicrm_rest_url': 'https://fixme.ch/sites/all/modules/civicrm/extern/rest.php',
+}
