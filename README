@@ -11,6 +11,8 @@ Installation
    apt-get install python-pip
    pip install flask
 
+* Install deps
+
 * Create config.py and fill the need fields
 
   cp config.py-example config.py
