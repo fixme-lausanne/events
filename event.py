@@ -1,8 +1,10 @@
 #!/usr/bin/env python2
 
 from flask import Flask, render_template, request, url_for, redirect
-import requests
+import requests, json
 import config as cfg
+import IPython
+
 app = Flask(__name__)
 
 @app.route('/')
@@ -36,6 +38,24 @@ def send():
     return redirect('/')
 
 def send_techup(data):
+    return {'name': 'techup', 'url': 'http://google.com'}
+
+def send_gcal(data):
+    post = {
+      "summary": data.title,
+      "description": data.description,
+      "location": data.address,
+      "start": {
+        "dateTime": "%sT%s:00.000+02:00" % (data.date_from, data.time_from),
+        "timeZone": "Europe/Zurich"
+      },
+      "end": {
+        "dateTime": "%sT%s:00.000+02:00" % (data.date_to, data.time_to),
+        "timeZone": "Europe/Zurich"
+      }
+    }
+    r = requests.post('/users/me/calendarList?key=%s'cfg.gcal.api_key, data=json.dumps(post))
+    IPython.embed()
     return {'name': 'techup', 'url': 'http://google.com'}
 
 if __name__ == '__main__':
