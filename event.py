@@ -7,6 +7,7 @@ app = Flask(__name__)
 def home():
     return render_template('form.html', data={
         'js': url_for('static', filename='main.js'),
+        'css': url_for('static', filename='style.css'),
     })
 
 @app.route('/send', methods=['POST'])
