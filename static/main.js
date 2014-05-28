@@ -1,25 +1,14 @@
+function pad(n){
+    return n<10 ? '0'+n : n
+}
+
 function set_date_picker(){
-    var dt_format = 'yy-mm-dd'; // FIXME: add timepicker !
-    c_date_from = $.datepicker.formatDate(dt_format, new Date($.now()-86400000*1));
-    c_date_to = $.datepicker.formatDate(dt_format, new Date($.now()));
-    $('#ev_from').datepicker({
-        autoSize: true,
-        dateFormat: dt_format,
-        onSelect: function(dateText){
-            c_date_from = dateText;
-            get_data();
-        },
-    });
-    $('#ev_to').datepicker({
-        autoSize: true,
-        dateFormat: dt_format,
-        onSelect: function(dateText){
-            c_date_to = dateText;
-            get_data();
-        },
-    });
-    $("#ev_from").val(c_date_from);
-    $("#ev_to").val(c_date_to);
+    var d = new Date();
+    var strDate = d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+    $("#ev_date_from").val(strDate);
+    $("#ev_date_to").val(strDate);
+    $("#ev_time_from").val('19:00');
+    $("#ev_time_to").val('22:00');
 }
 
 set_date_picker();

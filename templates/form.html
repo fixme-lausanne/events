@@ -1,23 +1,43 @@
-<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="{{ data.css }}">
 <h1>Ajout d'un event</h1>
 <form method="POST" action="/send">
-    <label for="ev_title">Title: </label><input type="text" id="ev_title" name="ev_title" placeholder="Title" /><br/>
-    <label for="ev_tags">Tags: </label><input type="text" id="ev_tags" name="ev_tags" placeholder="tag, tag, tag" /><br/>
-    <label for="ev_from">Date from: </label><input type="text" id="ev_from" name="ev_from" placeholder="" /><br/>
-    <label for="ev_to">Date to: </label><input type="text" id="ev_to" name="ev_to" placeholder="" /><br/>
-    <label for="ev_address">Address: </label><input type="text" id="ev_address" name="ev_address" placeholder="" /><br/>
-    <label for="ev_url">URL: </label><input type="text" id="ev_url" name="ev_url" placeholder="" /><br/>
-    <label for="ev_free">Is the event free ?: </label><input type="text" id="ev_free" name="ev_free" placeholder="" /><br/>
-    <label for="ev_tags">Tags: </label><input type="text" id="ev_tags" name="ev_tags" placeholder="" /><br/>
-    <label for="ev_description">Description: </label><br/>
+    <label for="ev_title">Title: </label>
+        <input type="text" id="ev_title" name="ev_title" placeholder="DBMS meeting" /><br/>
+
+    <label for="ev_date_from">Date from: </label>
+        <input type="date" id="ev_date_from" name="ev_date_from" />
+        <input type="time" id="ev_time_from" name="ev_time_from" /><br/>
+
+    <label for="ev_date_to">Date to: </label>
+        <input type="date" id="ev_date_to" name="ev_date_to" />
+        <input type="time" id="ev_time_to" name="ev_time_to" /><br/>
+
+    <label for="ev_address">Address: </label>
+        <input type="text" id="ev_address" name="ev_address" placeholder="Rue de Genève 79, 1004 Lausanne" /><br/>
+
+    <label for="ev_url">URL: </label>
+        <input type="url" id="ev_url" name="ev_url" placeholder="https://fixme.ch/civicrm/event/info?reset=1&id=130" /><br/>
+
+    <label for="ev_free">Is the event free ?: </label>
+        <input type="radio" id="is_free_yes" name="ev_free" value="yes" checked="checked">
+        <label class="nowidth" for="is_free_yes">yes</label>
+        <input type="radio" id="is_free_no" name="ev_free" value="no">
+        <label class="nowidth" for="is_free_no">no</label>
+        <br/>
+
+    <label for="ev_tags">Tags: </label>
+        <input type="text" id="ev_tags" name="ev_tags" placeholder="fixme, hackerspace, hacker, dbms, database" /><br/>
+
+    <label class="nowidth" for="ev_description">Description (<a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>): </label><br/>
         <textarea id="ev_description" id="ev_description"></textarea><br/>
+
     <input type="hidden" id="ev_twitter" name="ev_twitter" />
+
+    <br/>
 
     <input type="submit" value="Envoyer" name="Submit" />
     <input type="reset" value="Effacer" />
 
 </form>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="{{ data.js }}"></script>

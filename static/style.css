@@ -1,4 +1,15 @@
 label {
-    width: 120px;
+    width: 150px;
     display: inline-block;
+}
+label.nowidth {
+    width: auto;
+}
+input[type=text],
+input[type=url] {
+    width: 270px;
+}
+textarea {
+    width: 420px;
+    height: 12em;
 }
