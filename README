@@ -9,7 +9,7 @@ Installation
 * Install the latest stable flask
 
    apt-get install python-pip
-   pip install flask
+   pip install flask requests
 
 * Install deps
 
