@@ -72,7 +72,7 @@ def send_gcal(data):
         scope = 'https://www.googleapis.com/auth/calendar',
         user_agent = UA)
     http = auth_goog(FLOW)
-    service = build('calendar', 'v3', http=http, developerKey='')
+    service = build('calendar', 'v3', http=http)
     post = {
       "summary": data['title'],
       "description": data['description'],

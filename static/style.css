@@ -5,6 +5,11 @@ label {
 label.nowidth {
     width: auto;
 }
+input[type=submit], 
+input[type=reset] {
+    border: 1px solid;
+    padding: 5px 10px;
+}
 input[type=text],
 input[type=url] {
     margin: 2px;
@@ -14,5 +19,5 @@ input[type=url] {
 }
 textarea {
     width: 420px;
-    height: 12em;
+    height: 30em;
 }
