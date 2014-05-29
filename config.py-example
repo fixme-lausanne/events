@@ -8,16 +8,19 @@ twitter = {
     'access_token_secret': '',
 }
 
-# Facebook
-facebook = {
-    'access_token': '',
-}
-
-# Google+
+# Google
 gplus = {}
+gcal = {
+    'api_key': '',
+}
 
 # Fixme.ch
 fixme = {
     'civicrm_site_key': '',
     'civicrm_rest_url': 'https://fixme.ch/sites/all/modules/civicrm/extern/rest.php',
 }
+
+# Facebook
+#facebook = {
+#    'access_token': '',
+#}
