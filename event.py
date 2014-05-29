@@ -3,7 +3,6 @@
 from flask import Flask, render_template, request, url_for, redirect
 import requests, json
 import config as cfg
-import IPython
 
 app = Flask(__name__)
 
@@ -32,6 +31,7 @@ def send():
             'twitter': request.form['ev_twitter'],
         }
         services.append(send_techup(data))
+        services.append(send_gcal(data))
         return render_template('send.html', data={
             'services': services,
         })
@@ -42,21 +42,20 @@ def send_techup(data):
 
 def send_gcal(data):
     post = {
-      "summary": data.title,
-      "description": data.description,
-      "location": data.address,
+      "summary": data['title'],
+      "description": data['description'],
+      "location": data['address'],
       "start": {
-        "dateTime": "%sT%s:00.000+02:00" % (data.date_from, data.time_from),
+        "dateTime": "%sT%s:00.000+02:00" % (data['date_from'], data['time_from']),
         "timeZone": "Europe/Zurich"
       },
       "end": {
-        "dateTime": "%sT%s:00.000+02:00" % (data.date_to, data.time_to),
+        "dateTime": "%sT%s:00.000+02:00" % (data['date_to'], data['time_to']),
         "timeZone": "Europe/Zurich"
       }
     }
-    r = requests.post('/users/me/calendarList?key=%s'cfg.gcal.api_key, data=json.dumps(post))
-    IPython.embed()
-    return {'name': 'techup', 'url': 'http://google.com'}
+    r = requests.post('/users/me/calendarList?key=%s' % cfg.gcal['api_key'], data=json.dumps(post))
+    return r # {'name': 'techup', 'url': 'http://google.com'}
 
 if __name__ == '__main__':
     app.debug = True
