@@ -1,9 +1,22 @@
 #!/usr/bin/env python2
 
 from flask import Flask, render_template, request, url_for, redirect
+
+import IPython
+# IPython.embed()
+
+import gflags
+import httplib2
+
+from apiclient.discovery import build
+from oauth2client.file import Storage
+from oauth2client.client import OAuth2WebServerFlow
+from oauth2client.tools import run
+
 import requests, json
 import config as cfg
 
+UA = 'events/0.1'
 app = Flask(__name__)
 
 @app.route('/')
@@ -40,7 +53,26 @@ def send():
 def send_techup(data):
     return {'name': 'techup', 'url': 'http://google.com'}
 
+def auth_goog(FLOW):
+    FLAGS = gflags.FLAGS
+
+    storage = Storage('calendar.dat')
+    credentials = storage.get()
+    if credentials is None or credentials.invalid == True:
+      credentials = run(FLOW, storage)
+
+    http = httplib2.Http()
+    http = credentials.authorize(http)
+    return http
+
 def send_gcal(data):
+    FLOW = OAuth2WebServerFlow(
+        client_id = cfg.gcal['client_id'],
+        client_secret = cfg.gcal['client_secret'],
+        scope = 'https://www.googleapis.com/auth/calendar',
+        user_agent = UA)
+    http = auth_goog(FLOW)
+    service = build('calendar', 'v3', http=http, developerKey='')
     post = {
       "summary": data['title'],
       "description": data['description'],
@@ -54,10 +86,16 @@ def send_gcal(data):
         "timeZone": "Europe/Zurich"
       }
     }
-    r = requests.post('/users/me/calendarList?key=%s' % cfg.gcal['api_key'], data=json.dumps(post))
-    return r # {'name': 'techup', 'url': 'http://google.com'}
+
+    evt = service.events()
+    r = evt.insert(calendarId=cfg.gcal['calendarId'], body=post).execute()
+    #IPython.embed()
+    return r
 
 if __name__ == '__main__':
     app.debug = True
     app.run()
+    #data = {'description': u'test', 'tags': u'fixme, hackerspace', 'twitter': u'', 'time_from': u'19:00', 'free': u'yes', 'date_to': u'2014-05-30', 'time_to': u'22:00', 'title': u'Test', 'url': u'https://fixme.ch/civicrm/event/info?reset=1&id=130', 'date_from': u'2014-05-30', 'address': u'Rue de Gen\xe8ve 79, 1004 Lausanne'  }
+    #r=send_gcal(data)
+
 

@@ -9,7 +9,7 @@ Installation
 * Install the latest stable flask
 
    apt-get install python-pip
-   pip install flask requests
+   pip install flask requests google-api-python-client oauth2client python-gflags
 
 * Install deps
 
