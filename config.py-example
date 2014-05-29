@@ -11,7 +11,9 @@ twitter = {
 # Google
 gplus = {}
 gcal = {
-    'api_key': '',
+    'calendarId': 'sruulkb8vh28dim9bcth8emdm4@group.calendar.google.com',
+    'client_id': '',
+    'client_secret': '',
 }
 
 # Fixme.ch
