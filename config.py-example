@@ -1,5 +1,7 @@
 #!/usr/bin/env python2
 
+secret_key = ''
+
 # Twitter
 twitter = {
     'consumer_key': '',

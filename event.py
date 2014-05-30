@@ -21,6 +21,10 @@ import config as cfg
 UA = 'events/0.1'
 app = Flask(__name__)
 
+'''
+    PAGES
+'''
+
 @app.route('/')
 def home():
     session['username'] = random.getrandbits(32)
@@ -46,12 +50,16 @@ def send():
             'description': request.form['ev_description'],
             'twitter': request.form['ev_twitter'],
         }
-        services.append(send_techup(data))
-        services.append(send_gcal(data))
+        #services.append(send_techup(data))
+        #services.append(send_gcal(data))
         return render_template('send.html', data={
             'services': services,
         })
     return redirect('/')
+
+'''
+    SERVICES
+'''
 
 def send_techup(data):
     r = requests.post('http://techup.ch/submit', data={
@@ -116,6 +124,10 @@ def send_gcal(data):
     r = evt.insert(calendarId=cfg.gcal['calendarId'], body=post).execute()
     #IPython.embed()
     return {'name': 'Google Calendar', 'url': r['htmlLink']}
+
+'''
+    MAIN
+'''
 
 if __name__ == '__main__':
     app.debug = True
