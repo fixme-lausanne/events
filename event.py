@@ -52,9 +52,13 @@ def send():
             'description': request.form['ev_description'],
             'twitter': request.form['ev_twitter'],
         }
-        #services.append(send_agendalibre(data))
-        #services.append(send_techup(data))
-        #services.append(send_gcal(data))
+        services = request.form['services']
+        if 'techup' in services:
+            services.append(send_techup(data))
+        if 'agendalibre' in services:
+            services.append(send_agendalibre(data))
+        if 'gcal' in services:
+            services.append(send_gcal(data))
         return render_template('send.html', data={
             'services': services,
         })
