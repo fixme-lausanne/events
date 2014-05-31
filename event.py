@@ -21,9 +21,9 @@ import config as cfg
 UA = 'events/0.1'
 app = Flask(__name__)
 
-'''
-    PAGES
-'''
+#
+#    PAGES
+#
 
 @app.route('/')
 def home():
@@ -43,6 +43,8 @@ def send():
             'date_to': request.form['ev_date_to'],
             'time_from': request.form['ev_time_from'],
             'time_to': request.form['ev_time_to'],
+            'cp': request.form['ev_cp'],
+            'city': request.form['ev_city'],
             'address': request.form['ev_address'],
             'url': request.form['ev_url'],
             'free': request.form['ev_free'],
@@ -50,6 +52,7 @@ def send():
             'description': request.form['ev_description'],
             'twitter': request.form['ev_twitter'],
         }
+        #services.append(send_agendalibre(data))
         #services.append(send_techup(data))
         #services.append(send_gcal(data))
         return render_template('send.html', data={
@@ -57,35 +60,72 @@ def send():
         })
     return redirect('/')
 
-'''
-    SERVICES
-'''
+#
+#    SERVICES
+#
 
+# Agenda du Libre
+def send_agendalibre(data):
+
+    date_from = arrow.get('%s %s' % (data['date_from'], data['time_from']), 'YYYY-MM-DD HH:mm')
+    date_to = arrow.get('%s %s' % (data['date_to'], data['time_to']), 'YYYY-MM-DD HH:mm')
+
+    r = requests.post('http://www.agendadulibre.org/submit.php', data={
+        __event_title: data['title'],
+        __event_start_day: date_from.format('DD'),
+        __event_start_month: date_from.format('MM'),
+        __event_start_year: date_from.format('YYYY'),
+        __event_start_hour: date_from.format('HH'),
+        __event_start_minute: date_from.format('mm'),
+        __event_end_day: date_to.format('DD'),
+        __event_end_month: date_to.format('MM'),
+        __event_end_year: date_to.format('YYYY'),
+        __event_end_hour: date_to.format('HH'),
+        __event_end_minute: date_to.format('mm'),
+        __event_description: data['description'],
+        __event_city: data['city'],
+        __event_region: 'Vaud',
+        __event_locality: 0, #Locale=0, Nationale=1
+        __event_url: data['url'],
+        __event_contact: 'info@fixme.ch',
+        __event_submitter: 'info@fixme.ch',
+        __event_tags: data['tags'],
+        __event_save: 'Valider',
+    })
+    #IPython.embed()
+    return {'name': 'techup', 'url': 'http://google.com'}
+
+# TECHUP
 def send_techup(data):
+
+    date_from = arrow.get('%s %s' % (data['date_from'], data['time_from']), 'YYYY-MM-DD HH:mm')
+    date_to = arrow.get('%s %s' % (data['date_to'], data['time_to']), 'YYYY-MM-DD HH:mm')
+
     r = requests.post('http://techup.ch/submit', data={
-        is_free: 'yes',
+        is_free: data['free'],
         event: {
-            name: 'test',
-            dateFrom: {date: {day:1}},
-            dateFrom: {date: {month:1}},
-            dateFrom: {date: {year:2015}},
-            dateFrom: {date: {hour:19}},
-            dateFrom: {date: {minute:0}},
-            dateTo: {date: {day:1}},
-            dateTo: {date: {month:1}},
-            dateTo: {date: {year:2015}},
-            dateTo: {date: {hour:22}},
-            dateTo: {date: {minute:0}},
-            location: 'FIXME Hackerspace, 79 Rue de Genève  Lausanne, VD 1004 CH',
-            description: 'desc',
-            link: 'https://fixme.ch/civicrm/event/info?reset=1&id=128',
-            twitter:'_fixme',
-            tagsText: 'fixme, hackerspace, electronic, art, maker, electronique',
+            name: data['title'],
+            dateFrom: {date: {day: date_from.format('DD')}},
+            dateFrom: {date: {month: date_from.format('MM')}},
+            dateFrom: {date: {year: date_from.format('YYYY')}},
+            dateFrom: {date: {hour: date_from.format('HH')}},
+            dateFrom: {date: {minute: date_from.format('mm')}},
+            dateTo: {date: {day: date_to.format('DD')}},
+            dateTo: {date: {month: date_to.format('MM')}},
+            dateTo: {date: {year: date_to.format('YYYY')}},
+            dateTo: {date: {hour: date_to.format('HH')}},
+            dateTo: {date: {minute: date_to.format('mm')}},
+            location: '%s, %s %s' % (data['address'], data['cp'], data['city']),
+            description: data['description'],
+            link: data['url'],
+            twitter: data['twitter'],
+            tagsText: data['tags'],
         }
     })
     #IPython.embed()
     return {'name': 'techup', 'url': 'http://google.com'}
 
+# GOOGLE
 def auth_goog(FLOW):
     FLAGS = gflags.FLAGS
 
@@ -98,6 +138,7 @@ def auth_goog(FLOW):
     http = credentials.authorize(http)
     return http
 
+# Calendar
 def send_gcal(data):
     FLOW = OAuth2WebServerFlow(
         client_id = cfg.gcal['client_id'],
@@ -109,7 +150,7 @@ def send_gcal(data):
     post = {
       "summary": data['title'],
       "description": data['description'],
-      "location": data['address'],
+      "location": '%s, %s %s' % (data['address'], data['cp'], data['city']),
       "start": {
         "dateTime": "%sT%s:00.000+02:00" % (data['date_from'], data['time_from']),
         "timeZone": "Europe/Zurich"
@@ -125,9 +166,9 @@ def send_gcal(data):
     #IPython.embed()
     return {'name': 'Google Calendar', 'url': r['htmlLink']}
 
-'''
-    MAIN
-'''
+#
+#    MAIN
+#
 
 if __name__ == '__main__':
     app.debug = True
