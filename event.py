@@ -52,7 +52,7 @@ def send():
             'description': request.form['ev_description'],
             'twitter': request.form['ev_twitter'],
         }
-        services = request.form['services']
+        services = request.form['ev_services']
         if 'techup' in services:
             services.append(send_techup(data))
         if 'agendalibre' in services:
