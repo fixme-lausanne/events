@@ -89,7 +89,7 @@ def send_agendalibre(data):
         __event_url: data['url'],
         __event_contact: 'info@fixme.ch',
         __event_submitter: 'info@fixme.ch',
-        __event_tags: data['tags'],
+        __event_tags: data['tags'].replace(',', ' '),
         __event_save: 'Valider',
     })
     #IPython.embed()
