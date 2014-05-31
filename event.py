@@ -18,7 +18,7 @@ from oauth2client.tools import run
 import requests, json
 import config as cfg
 
-UA = 'events/0.1'
+UA = 'fixme-events/0.1'
 app = Flask(__name__)
 
 #
@@ -70,7 +70,7 @@ def send_agendalibre(data):
     date_from = arrow.get('%s %s' % (data['date_from'], data['time_from']), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (data['date_to'], data['time_to']), 'YYYY-MM-DD HH:mm')
 
-    r = requests.post('http://www.agendadulibre.org/submit.php', data={
+    r = requests.post('http://www.agendadulibre.org/submit.php', headers={'User-Agent': UA}, data={
         __event_title: data['title'],
         __event_start_day: date_from.format('DD'),
         __event_start_month: date_from.format('MM'),
@@ -101,7 +101,7 @@ def send_techup(data):
     date_from = arrow.get('%s %s' % (data['date_from'], data['time_from']), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (data['date_to'], data['time_to']), 'YYYY-MM-DD HH:mm')
 
-    r = requests.post('http://techup.ch/submit', data={
+    r = requests.post('http://techup.ch/submit', headers={'User-Agent': UA}, data={
         is_free: data['free'],
         event: {
             name: data['title'],
