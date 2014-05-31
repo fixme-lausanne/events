@@ -93,7 +93,7 @@ def send_agendalibre(data):
         __event_save: 'Valider',
     })
     #IPython.embed()
-    return {'name': 'techup', 'url': 'http://google.com'}
+    return {'name': 'Agenda du Libre', 'url': 'http://www.agendadulibre.org'}
 
 # TECHUP
 def send_techup(data):
@@ -123,13 +123,13 @@ def send_techup(data):
         }
     })
     #IPython.embed()
-    return {'name': 'techup', 'url': 'http://google.com'}
+    return {'name': 'Techup', 'url': 'http://techup.ch'}
 
 # GOOGLE
 def auth_goog(FLOW):
     FLAGS = gflags.FLAGS
 
-    storage = Storage('calendar.dat')
+    storage = Storage('google.dat')
     credentials = storage.get()
     if credentials is None or credentials.invalid == True:
       credentials = run(FLOW, storage)
