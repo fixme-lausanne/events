@@ -11,4 +11,20 @@ function set_date_picker(){
     $("#ev_time_to").val('22:00');
 }
 
-set_date_picker();
+function set_services_btn(){
+    $('#services_all').click(function(){
+        $('input[name="ev_services"]').each(function(k, elem){
+                $(elem).prop('checked', true);
+        });
+    });
+    $('#services_none').click(function(){
+        $('input[name="ev_services"]').each(function(k, elem){
+                $(elem).prop('checked', false);
+        });
+    });
+}
+
+$(document).ready(function() {
+    set_date_picker();
+    set_services_btn();
+});
