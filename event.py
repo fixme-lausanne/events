@@ -68,6 +68,10 @@ def send():
 #    SERVICES
 #
 
+# Site FIXME
+def send_fixme(data):
+    return {'name': 'FIXME website', 'url': 'FIXME'}
+
 # Agenda du Libre
 def send_agendalibre(data):
 
