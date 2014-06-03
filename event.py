@@ -1,8 +1,9 @@
 #!/usr/bin/env python2
 # -*- coding: utf8 -*-
+#from __future__ import unicode_literals
 
 from flask import Flask, render_template, request, url_for, redirect, session
-import random
+import random, sys, arrow
 
 import IPython
 # IPython.embed()
@@ -51,13 +52,16 @@ def send():
             'tags': request.form['ev_tags'],
             'description': request.form['ev_description'],
             'twitter': request.form['ev_twitter'],
+            'type': request.form['ev_type'],
         }
-        services = request.form['ev_services']
-        if 'techup' in services:
+        fserv = request.form['ev_services']
+        if 'fixme' in fserv:
+            services.append(send_fixme(data))
+        if 'techup' in fserv:
             services.append(send_techup(data))
-        if 'agendalibre' in services:
+        if 'agendalibre' in fserv:
             services.append(send_agendalibre(data))
-        if 'gcal' in services:
+        if 'gcal' in fserv:
             services.append(send_gcal(data))
         return render_template('send.html', data={
             'services': services,
@@ -70,13 +74,30 @@ def send():
 
 # Site FIXME
 def send_fixme(data):
-    return {'name': 'FIXME website', 'url': 'FIXME'}
+
+    date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
+    date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
+
+    r = requests.post(cfg.fixme['civicrm_rest_url'], headers={'User-Agent': UA}, data={
+        'title': data['title'],
+        'event_type_id': data['type'],
+        'start_date': date_from.format('YYYY-MM-DD HH:mm'),
+        'end_date': date_to.format('YYYY-MM-DD HH:mm'),
+        'description': ' '.join(data['description'].split(' ')[10:]) + '...', #it's not perfect
+        'summary': ' '.join(data['description'].split(' ')[:10]),
+        'is_event_public': True,
+        'is_active': True,
+        'key': cfg.fixme['civicrm_site_key'],
+        'api_key': cfg.fixme['civicrm_api_key'],
+    })
+    IPython.embed()
+    return {'name': 'FIXME website', 'url': 'https://fixme.ch/civicrm/event/info?id='}
 
 # Agenda du Libre
 def send_agendalibre(data):
 
-    date_from = arrow.get('%s %s' % (data['date_from'], data['time_from']), 'YYYY-MM-DD HH:mm')
-    date_to = arrow.get('%s %s' % (data['date_to'], data['time_to']), 'YYYY-MM-DD HH:mm')
+    date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
+    date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
 
     r = requests.post('http://www.agendadulibre.org/submit.php', headers={'User-Agent': UA}, data={
         __event_title: data['title'],
@@ -106,8 +127,8 @@ def send_agendalibre(data):
 # TECHUP
 def send_techup(data):
 
-    date_from = arrow.get('%s %s' % (data['date_from'], data['time_from']), 'YYYY-MM-DD HH:mm')
-    date_to = arrow.get('%s %s' % (data['date_to'], data['time_to']), 'YYYY-MM-DD HH:mm')
+    date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
+    date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
 
     r = requests.post('http://techup.ch/submit', headers={'User-Agent': UA}, data={
         is_free: data['free'],
@@ -179,6 +200,9 @@ def send_gcal(data):
 #
 
 if __name__ == '__main__':
+    if cfg.secret_key == '':
+        print 'configure secret_key!'
+        sys.exit(0)
     app.debug = True
     app.secret_key = cfg.secret_key
     app.run()
