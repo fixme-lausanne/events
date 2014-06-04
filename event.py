@@ -61,8 +61,8 @@ def send():
             fserv = request.form.getlist('ev_services')
             if 'fixme' in fserv:
                 services.append(send_fixme(data))
-            #if 'techup' in fserv:
-            #    services.append(send_techup(data))
+            if 'techup' in fserv:
+                services.append(send_techup(data))
             if 'agendalibre' in fserv:
                 services.append(send_agendalibre(data))
             if 'gcal' in fserv:
@@ -156,7 +156,10 @@ def send_techup(data):
     if url != None:
         data['url'] = url
 
-    r = requests.post('http://techup.ch/submit', headers={'User-Agent': UA}, data={
+    r = requests.post('http://techup.ch/submit', headers={'User-Agent': UA}, cookies={
+            'techup': cfg.techup['techup'],
+            'techupauth2': cfg.techup['techupauth2'],
+        }, data={
         'is_free': data['free'],
         'event': {
             'name': data['title'],
