@@ -6,12 +6,11 @@ Publish FIXME events on all the platforms
 Installation
 ------------
 
-* Install the latest stable flask
+* Install the latest stable flask and dependencies
 
    apt-get install python-pip python-httplib2
-   pip install flask requests google-api-python-client oauth2client python-gflags arrow
-
-* Install deps
+   pip install flask requests google-api-python-client \
+               oauth2client python-gflags arrow
 
 * Create config.py and fill the need fields
 
