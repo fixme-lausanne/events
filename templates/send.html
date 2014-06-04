@@ -5,6 +5,8 @@
 <ul>
 {% for service in data.services %}
     <li><a href="{{ service.url }}">{{ service.name }}</a>{{ service.error }}</li>
+{% else %}
+    No service selected !
 {% endfor %}
 </ul>
 {% endblock %}

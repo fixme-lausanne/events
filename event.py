@@ -40,33 +40,36 @@ def home():
 def send():
     services = []
     if request.method == 'POST':
-        data = {
-            'title': request.form['ev_title'],
-            'date_from': request.form['ev_date_from'],
-            'date_to': request.form['ev_date_to'],
-            'time_from': request.form['ev_time_from'],
-            'time_to': request.form['ev_time_to'],
-            'cp': request.form['ev_cp'],
-            'city': request.form['ev_city'],
-            'address': request.form['ev_address'],
-            'url': request.form['ev_url'],
-            'free': request.form['ev_free'],
-            'tags': request.form['ev_tags'],
-            'description': request.form['ev_description'],
-            'twitter': request.form['ev_twitter'],
-            'type': request.form['ev_type'],
-        }
-        fserv = request.form['ev_services']
-        if 'fixme' in fserv:
-            services.append(send_fixme(data))
-        if 'techup' in fserv:
-            services.append(send_techup(data))
-        if 'agendalibre' in fserv:
-            services.append(send_agendalibre(data))
-        if 'gcal' in fserv:
-            services.append(send_gcal(data))
-        if 'twitter' in fserv:
-            services.append(send_twitter(data))
+        try:
+            data = {
+                'title': request.form['ev_title'],
+                'date_from': request.form['ev_date_from'],
+                'date_to': request.form['ev_date_to'],
+                'time_from': request.form['ev_time_from'],
+                'time_to': request.form['ev_time_to'],
+                'cp': request.form['ev_cp'],
+                'city': request.form['ev_city'],
+                'address': request.form['ev_address'],
+                'url': request.form['ev_url'],
+                'free': request.form['ev_free'],
+                'tags': request.form['ev_tags'],
+                'description': request.form['ev_description'],
+                'twitter': request.form['ev_twitter'],
+                'type': request.form['ev_type'],
+            }
+            fserv = request.form['ev_services']
+            if 'fixme' in fserv:
+                services.append(send_fixme(data))
+            if 'techup' in fserv:
+                services.append(send_techup(data))
+            if 'agendalibre' in fserv:
+                services.append(send_agendalibre(data))
+            if 'gcal' in fserv:
+                services.append(send_gcal(data))
+            if 'twitter' in fserv:
+                services.append(send_twitter(data))
+        except KeyError, e:
+            pass
         return render_template('send.html', data={
             'services': services,
         })
