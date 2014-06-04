@@ -78,19 +78,20 @@ def send_fixme(data):
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
 
+    desc = data['desc'].split(' ')
     r = requests.post(cfg.fixme['civicrm_rest_url'], headers={'User-Agent': UA}, data={
         'title': data['title'],
         'event_type_id': data['type'],
         'start_date': date_from.format('YYYY-MM-DD HH:mm'),
         'end_date': date_to.format('YYYY-MM-DD HH:mm'),
-        'description': ' '.join(data['description'].split(' ')[10:]) + '...', #it's not perfect
-        'summary': ' '.join(data['description'].split(' ')[:10]),
+        'description': ' '.join(desc[10:]) + '...' if len(desc) > 10 else '', #it's not perfect
+        'summary': ' '.join(desc[:10]),
         'is_event_public': True,
         'is_active': True,
         'key': cfg.fixme['civicrm_site_key'],
         'api_key': cfg.fixme['civicrm_api_key'],
     })
-    IPython.embed()
+    #IPython.embed()
     return {'name': 'FIXME website', 'url': 'https://fixme.ch/civicrm/event/info?id='}
 
 # Agenda du Libre
