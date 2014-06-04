@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-secret_key = 'asdasd'
+secret_key = ''
 
 # Twitter
 # https://apps.twitter.com/app/6277528
