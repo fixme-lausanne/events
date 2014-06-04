@@ -4,7 +4,7 @@
 
 from flask import Flask, render_template, request, url_for, redirect, session
 from twython import Twython
-import random, sys, arrow, requests, json
+import random, sys, arrow, requests, json, re
 
 import IPython
 # IPython.embed()
@@ -155,31 +155,38 @@ def send_techup(data):
     if url != None:
         data['url'] = url
 
+    # Get CSRF cook
+    r = requests.get('http://techup.ch/submit', headers={'User-Agent': UA}, cookies={
+            'techup': cfg.techup['techup'],
+            'techupauth2': cfg.techup['techupauth2'],
+        })
+    token = re.findall('name="event\[_token\]" value="(\w*)"', r.content)[0]
+
+    # Send event
     r = requests.post('http://techup.ch/submit', headers={'User-Agent': UA}, cookies={
             'techup': cfg.techup['techup'],
             'techupauth2': cfg.techup['techupauth2'],
         }, data={
         'is_free': data['free'],
-        'event': {
-            'name': data['title'],
-            'dateFrom': {'date': {'day': date_from.format('DD')}},
-            'dateFrom': {'date': {'month': date_from.format('MM')}},
-            'dateFrom': {'date': {'year': date_from.format('YYYY')}},
-            'dateFrom': {'date': {'hour': date_from.format('HH')}},
-            'dateFrom': {'date': {'minute': date_from.format('mm')}},
-            'dateTo': {'date': {'day': date_to.format('DD')}},
-            'dateTo': {'date': {'month': date_to.format('MM')}},
-            'dateTo': {'date': {'year': date_to.format('YYYY')}},
-            'dateTo': {'date': {'hour': date_to.format('HH')}},
-            'dateTo': {'date': {'minute': date_to.format('mm')}},
-            'location': '%s, %s %s' % (data['address'], data['cp'], data['city']),
-            'description': data['description'],
-            'link': data['url'],
-            'twitter': data['twitter'],
-            'tagsText': data['tags'],
-        }
+        'event[_token]': token,
+        'event[name]': data['title'],
+        'event[dateFrom][date][day]': date_from.format('D'),
+        'event[dateFrom][date][month]': date_from.format('M'),
+        'event[dateFrom][date][year]': date_from.format('YYYY'),
+        'event[dateFrom][time][hour]': date_from.format('H'),
+        'event[dateFrom][time][minute]': date_from.format('m'),
+        'event[dateTo][date][day]': date_to.format('D'),
+        'event[dateTo][date][month]': date_to.format('M'),
+        'event[dateTo][date][year]': date_to.format('YYYY'),
+        'event[dateTo][time][hour]': date_to.format('H'),
+        'event[dateTo][time][minute]': date_to.format('m'),
+        'event[location]': '%s, %s %s' % (data['address'], data['cp'], data['city']),
+        'event[description]': data['description'],
+        'event[link]': data['url'],
+        'event[twitter]': data['twitter'],
+        'event[tagsText]': data['tags'],
     })
-    IPython.embed()
+    #IPython.embed()
     return {'name': 'Techup', 'url': 'http://techup.ch'}
 
 # GOOGLE
