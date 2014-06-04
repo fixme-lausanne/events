@@ -207,7 +207,6 @@ def send_gcal(data):
       "source": {
             "title": "Event link",
             "url": data['url'],
-          }
       },
     }
 
