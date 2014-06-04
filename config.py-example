@@ -11,6 +11,12 @@ twitter = {
     'access_secret': '',
 }
 
+# Techup
+techup = {
+    'techup': '',
+    'techupauth2': '',
+}
+
 # Google
 gplus = {}
 gcal = {
