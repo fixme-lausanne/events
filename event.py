@@ -4,7 +4,7 @@
 
 from flask import Flask, render_template, request, url_for, redirect, session
 from twython import Twython
-import random, sys, arrow
+import random, sys, arrow, requests, json
 
 import IPython
 # IPython.embed()
@@ -17,7 +17,7 @@ from oauth2client.file import Storage
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.tools import run
 
-import requests, json
+sys.path.insert(0, './')
 import config as cfg
 
 UA = 'fixme-events/0.1'
