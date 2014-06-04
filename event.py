@@ -58,11 +58,11 @@ def send():
                 'twitter': request.form['ev_twitter'],
                 'type': request.form['ev_type'],
             }
-            fserv = request.form['ev_services']
+            fserv = request.form.getlist('ev_services')
             if 'fixme' in fserv:
                 services.append(send_fixme(data))
-            if 'techup' in fserv:
-                services.append(send_techup(data))
+            #if 'techup' in fserv:
+            #    services.append(send_techup(data))
             if 'agendalibre' in fserv:
                 services.append(send_agendalibre(data))
             if 'gcal' in fserv:
@@ -148,6 +148,8 @@ def send_agendalibre(data):
 # TECHUP
 def send_techup(data):
 
+    #FIXME: needs twitter auth
+
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
 
@@ -155,27 +157,27 @@ def send_techup(data):
         data['url'] = url
 
     r = requests.post('http://techup.ch/submit', headers={'User-Agent': UA}, data={
-        is_free: data['free'],
-        event: {
-            name: data['title'],
-            dateFrom: {date: {day: date_from.format('DD')}},
-            dateFrom: {date: {month: date_from.format('MM')}},
-            dateFrom: {date: {year: date_from.format('YYYY')}},
-            dateFrom: {date: {hour: date_from.format('HH')}},
-            dateFrom: {date: {minute: date_from.format('mm')}},
-            dateTo: {date: {day: date_to.format('DD')}},
-            dateTo: {date: {month: date_to.format('MM')}},
-            dateTo: {date: {year: date_to.format('YYYY')}},
-            dateTo: {date: {hour: date_to.format('HH')}},
-            dateTo: {date: {minute: date_to.format('mm')}},
-            location: '%s, %s %s' % (data['address'], data['cp'], data['city']),
-            description: data['description'],
-            link: data['url'],
-            twitter: data['twitter'],
-            tagsText: data['tags'],
+        'is_free': data['free'],
+        'event': {
+            'name': data['title'],
+            'dateFrom': {'date': {'day': date_from.format('DD')}},
+            'dateFrom': {'date': {'month': date_from.format('MM')}},
+            'dateFrom': {'date': {'year': date_from.format('YYYY')}},
+            'dateFrom': {'date': {'hour': date_from.format('HH')}},
+            'dateFrom': {'date': {'minute': date_from.format('mm')}},
+            'dateTo': {'date': {'day': date_to.format('DD')}},
+            'dateTo': {'date': {'month': date_to.format('MM')}},
+            'dateTo': {'date': {'year': date_to.format('YYYY')}},
+            'dateTo': {'date': {'hour': date_to.format('HH')}},
+            'dateTo': {'date': {'minute': date_to.format('mm')}},
+            'location': '%s, %s %s' % (data['address'], data['cp'], data['city']),
+            'description': data['description'],
+            'link': data['url'],
+            'twitter': data['twitter'],
+            'tagsText': data['tags'],
         }
     })
-    #IPython.embed()
+    IPython.embed()
     return {'name': 'Techup', 'url': 'http://techup.ch'}
 
 # GOOGLE
