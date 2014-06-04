@@ -25,7 +25,7 @@ app = Flask(__name__)
 if cfg.secret_key == '':
     print 'configure secret_key!'
     sys.exit(0)
-app.debug = True
+#app.debug = True
 app.secret_key = cfg.secret_key
 
 #
@@ -291,7 +291,7 @@ def send_facebook(data):
 #    MAIN
 #
 
-if __name__ == '__main__':
-    app.run()
+#if __name__ == '__main__':
+#    app.run()
 
 
