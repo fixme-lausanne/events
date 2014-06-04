@@ -38,6 +38,7 @@ def home():
 
 @app.route('/send', methods=['POST', 'GET'])
 def send():
+    error = None
     services = []
     if request.method == 'POST':
         try:
@@ -68,10 +69,13 @@ def send():
                 services.append(send_gcal(data))
             if 'twitter' in fserv:
                 services.append(send_twitter(data))
+            if 'facebook' in fserv:
+                services.append(send_facebook(data))
         except KeyError, e:
-            pass
+            error = e
         return render_template('send.html', data={
             'services': services,
+            'error': error
         })
     return redirect('/')
 
@@ -239,6 +243,33 @@ def send_twitter(data):
     except Exception, e:
         return {'name': 'Twitter', 'url': '', 'error': e}
     return {'name': 'Twitter', 'url': 'https://twitter.com/_fixme/status/%s' % (r['id_str'])}
+
+# FACEBOOK
+def send_facebook(data):
+
+    date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
+    date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
+
+    if url != None:
+        data['url'] = url
+
+    r = requests.post(cfg.facebook['url'], headers={'User-Agent': UA}, data={
+        'message': '%s, %s %s.-%s %s' % (
+            data['title'],
+            data['date_from'],
+            data['time_from'],
+            data['date_to'],
+            data['time_to'],
+        ),
+        'link': data['url'],
+        'picture': 'https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/400419_313649045338844_1285783717_n.jpg',
+        'caption': data['description'],
+        #'place': '194766147227135',
+        'access_token': cfg.facebook['access_token'],
+    })
+    #IPython.embed()
+    _id = r.json()['id'].split('_')[1]
+    return {'name': 'Facebook', 'url': 'https://www.facebook.com/fixmehackerspace/posts/%s' % _id}
 
 #
 #    MAIN

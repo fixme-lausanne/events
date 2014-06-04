@@ -1,6 +1,6 @@
 #!/usr/bin/env python2
 
-secret_key = ''
+secret_key = 'asdasd'
 
 # Twitter
 # https://apps.twitter.com/app/6277528
@@ -28,6 +28,7 @@ fixme = {
 }
 
 # Facebook
-#facebook = {
-#    'access_token': '',
-#}
+facebook = {
+    'access_token': '',
+    'url': 'https://graph.facebook.com/fixmehackerspace/feed',
+}
