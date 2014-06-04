@@ -234,7 +234,7 @@ def send_twitter(data):
         cfg.twitter['access_secret'],
     )
     try:
-        r=twitt.update_status(status='%s, %s %s. %s' % (
+        r=twitt.update_status(status='Event: %s, %s %s. %s' % (
             data['title'],
             data['date_from'],
             data['time_from'],
@@ -254,7 +254,7 @@ def send_facebook(data):
         data['url'] = url
 
     r = requests.post(cfg.facebook['url'], headers={'User-Agent': UA}, data={
-        'message': '%s, %s %s.-%s %s' % (
+        'message': 'Event: %s, %s %s.-%s %s' % (
             data['title'],
             data['date_from'],
             data['time_from'],
