@@ -226,7 +226,5 @@ if __name__ == '__main__':
     app.debug = True
     app.secret_key = cfg.secret_key
     app.run()
-    #data = {'description': u'test', 'tags': u'fixme, hackerspace', 'twitter': u'', 'time_from': u'19:00', 'free': u'yes', 'date_to': u'2014-05-30', 'time_to': u'22:00', 'title': u'Test', 'url': u'https://fixme.ch/civicrm/event/info?reset=1&id=130', 'date_from': u'2014-05-30', 'address': u'Rue de Gen\xe8ve 79, 1004 Lausanne'  }
-    #r=send_gcal(data)
 
 
