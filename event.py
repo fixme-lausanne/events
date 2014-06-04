@@ -291,7 +291,7 @@ def send_facebook(data):
 #    MAIN
 #
 
-#if __name__ == '__main__':
-#    app.run()
+if __name__ == '__main__':
+    app.run()
 
 
