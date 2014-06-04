@@ -20,8 +20,13 @@ from oauth2client.tools import run
 import config as cfg
 
 UA = 'fixme-events/0.1'
-app = Flask(__name__)
 url = None
+app = Flask(__name__)
+if cfg.secret_key == '':
+    print 'configure secret_key!'
+    sys.exit(0)
+app.debug = True
+app.secret_key = cfg.secret_key
 
 #
 #    PAGES
@@ -287,11 +292,6 @@ def send_facebook(data):
 #
 
 if __name__ == '__main__':
-    if cfg.secret_key == '':
-        print 'configure secret_key!'
-        sys.exit(0)
-    app.debug = True
-    app.secret_key = cfg.secret_key
     app.run()
 
 
