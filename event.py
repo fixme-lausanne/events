@@ -17,7 +17,6 @@ from oauth2client.file import Storage
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.tools import run
 
-sys.path.insert(0, './')
 import config as cfg
 
 UA = 'fixme-events/0.1'
