@@ -75,6 +75,7 @@ def send():
 
 # Site FIXME
 def send_fixme(data):
+    global url
 
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
@@ -106,6 +107,9 @@ def send_agendalibre(data):
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
 
+    if url != None:
+        data['url'] = url
+
     r = requests.post('http://www.agendadulibre.org/submit.php', headers={'User-Agent': UA}, data={
         __event_title: data['title'],
         __event_start_day: date_from.format('DD'),
@@ -136,6 +140,9 @@ def send_techup(data):
 
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
+
+    if url != None:
+        data['url'] = url
 
     r = requests.post('http://techup.ch/submit', headers={'User-Agent': UA}, data={
         is_free: data['free'],
@@ -176,6 +183,8 @@ def auth_goog(FLOW):
 
 # Calendar
 def send_gcal(data):
+    if url != None:
+        data['url'] = url
     FLOW = OAuth2WebServerFlow(
         client_id = cfg.gcal['client_id'],
         client_secret = cfg.gcal['client_secret'],
@@ -194,7 +203,12 @@ def send_gcal(data):
       "end": {
         "dateTime": "%sT%s:00.000+02:00" % (data['date_to'], data['time_to']),
         "timeZone": "Europe/Zurich"
-      }
+      },
+      "source": {
+            "title": "Event link",
+            "url": data['url'],
+          }
+      },
     }
 
     evt = service.events()
