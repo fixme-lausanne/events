@@ -3,6 +3,7 @@
 #from __future__ import unicode_literals
 
 from flask import Flask, render_template, request, url_for, redirect, session
+from twython import Twython
 import random, sys, arrow
 
 import IPython
@@ -64,6 +65,8 @@ def send():
             services.append(send_agendalibre(data))
         if 'gcal' in fserv:
             services.append(send_gcal(data))
+        if 'twitter' in fserv:
+            services.append(send_twitter(data))
         return render_template('send.html', data={
             'services': services,
         })
@@ -214,6 +217,25 @@ def send_gcal(data):
     r = evt.insert(calendarId=cfg.gcal['calendarId'], body=post).execute()
     #IPython.embed()
     return {'name': 'Google Calendar', 'url': r['htmlLink']}
+
+# TWITTER
+def send_twitter(data):
+    twitt = Twython(
+        cfg.twitter['app_key'],
+        cfg.twitter['app_secret'],
+        cfg.twitter['access_token'],
+        cfg.twitter['access_secret'],
+    )
+    try:
+        r=twitt.update_status(status='%s, %s %s. %s' % (
+            data['title'],
+            data['date_from'],
+            data['time_from'],
+            data['url'],
+        ))
+    except Exception, e:
+        return {'name': 'Twitter', 'url': '', 'error': e}
+    return {'name': 'Twitter', 'url': 'https://twitter.com/_fixme/status/%s' % (r['id_str'])}
 
 #
 #    MAIN

@@ -4,7 +4,7 @@
 <h2>event sent to:</h2>
 <ul>
 {% for service in data.services %}
-    <li><a href="{{ service.url }}">{{ service.name }}</a></li>
+    <li><a href="{{ service.url }}">{{ service.name }}</a>{{ service.error }}</li>
 {% endfor %}
 </ul>
 {% endblock %}

@@ -10,7 +10,7 @@ Installation
 
    apt-get install python-pip python-httplib2
    pip install flask requests google-api-python-client \
-               oauth2client python-gflags arrow
+               oauth2client python-gflags arrow twython
 
 * Create config.py and fill the need fields
 
