@@ -120,7 +120,7 @@ def send_agendalibre(data):
     if url != None:
         data['url'] = url
 
-    r = requests.post('http://www.agendadulibre.org/submit.php', headers={'User-Agent': UA}, data={
+    r = requests.post('http://www.agendadulibre.ch/submit.php', headers={'User-Agent': UA}, data={
         '__event_title': data['title'],
         '__event_start_day': date_from.format('DD'),
         '__event_start_month': date_from.format('MM'),
@@ -134,7 +134,7 @@ def send_agendalibre(data):
         '__event_end_minute': date_to.format('mm'),
         '__event_description': data['description'],
         '__event_city': data['city'],
-        '__event_region': 'Vaud',
+        '__event_region': 22,
         '__event_locality': 0, #Locale=0, Nationale=1
         '__event_url': data['url'],
         '__event_contact': 'info@fixme.ch',
@@ -143,7 +143,7 @@ def send_agendalibre(data):
         '__event_save': 'Valider',
     })
     #IPython.embed()
-    return {'name': 'Agenda du Libre', 'url': 'http://www.agendadulibre.org'}
+    return {'name': 'Agenda du Libre', 'url': 'http://www.agendadulibre.ch'}
 
 # TECHUP
 def send_techup(data):
