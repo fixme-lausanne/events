@@ -121,26 +121,26 @@ def send_agendalibre(data):
         data['url'] = url
 
     r = requests.post('http://www.agendadulibre.org/submit.php', headers={'User-Agent': UA}, data={
-        __event_title: data['title'],
-        __event_start_day: date_from.format('DD'),
-        __event_start_month: date_from.format('MM'),
-        __event_start_year: date_from.format('YYYY'),
-        __event_start_hour: date_from.format('HH'),
-        __event_start_minute: date_from.format('mm'),
-        __event_end_day: date_to.format('DD'),
-        __event_end_month: date_to.format('MM'),
-        __event_end_year: date_to.format('YYYY'),
-        __event_end_hour: date_to.format('HH'),
-        __event_end_minute: date_to.format('mm'),
-        __event_description: data['description'],
-        __event_city: data['city'],
-        __event_region: 'Vaud',
-        __event_locality: 0, #Locale=0, Nationale=1
-        __event_url: data['url'],
-        __event_contact: 'info@fixme.ch',
-        __event_submitter: 'info@fixme.ch',
-        __event_tags: data['tags'].replace(',', ' '),
-        __event_save: 'Valider',
+        '__event_title': data['title'],
+        '__event_start_day': date_from.format('DD'),
+        '__event_start_month': date_from.format('MM'),
+        '__event_start_year': date_from.format('YYYY'),
+        '__event_start_hour': date_from.format('HH'),
+        '__event_start_minute': date_from.format('mm'),
+        '__event_end_day': date_to.format('DD'),
+        '__event_end_month': date_to.format('MM'),
+        '__event_end_year': date_to.format('YYYY'),
+        '__event_end_hour': date_to.format('HH'),
+        '__event_end_minute': date_to.format('mm'),
+        '__event_description': data['description'],
+        '__event_city': data['city'],
+        '__event_region': 'Vaud',
+        '__event_locality': 0, #Locale=0, Nationale=1
+        '__event_url': data['url'],
+        '__event_contact': 'info@fixme.ch',
+        '__event_submitter': 'info@fixme.ch',
+        '__event_tags': data['tags'].replace(',', ' '),
+        '__event_save': 'Valider',
     })
     #IPython.embed()
     return {'name': 'Agenda du Libre', 'url': 'http://www.agendadulibre.org'}
@@ -265,7 +265,7 @@ def send_facebook(data):
         ),
         'link': data['url'],
         'picture': 'https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/400419_313649045338844_1285783717_n.jpg',
-        'caption': data['description'],
+        'description': data['description'],
         #'place': '194766147227135',
         'access_token': cfg.facebook['access_token'],
     })
