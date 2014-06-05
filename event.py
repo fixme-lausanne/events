@@ -251,10 +251,11 @@ def send_twitter(data):
         cfg.twitter['access_secret'],
     )
     try:
-        r=twitt.update_status(status='Event: %s, %s %s. %s' % (
+        date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
+        date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
+        r=twitt.update_status(status='Event: %s, %s %s' % (
             data['title'],
-            data['date_from'],
-            data['time_from'],
+            date_from.format('D MMM YYYY HH:ss'),
             data['url'],
         ))
     except Exception, e:
@@ -271,12 +272,10 @@ def send_facebook(data):
         data['url'] = url
 
     r = requests.post(cfg.facebook['url'], headers={'User-Agent': UA}, data={
-        'message': 'Event: %s, %s %s - %s %s' % (
+        'message': 'Event: %s, %s - %s' % (
             data['title'],
-            data['date_from'],
-            data['time_from'],
-            data['date_to'],
-            data['time_to'],
+            date_from.format('D MMM YYYY HH:ss'),
+            date_to.format('D MMM YYYY HH:ss'),
         ),
         'link': data['url'],
         'picture': 'https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/400419_313649045338844_1285783717_n.jpg',
