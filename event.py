@@ -6,8 +6,8 @@ from flask import Flask, render_template, request, url_for, redirect, session
 from twython import Twython
 import random, sys, arrow, requests, json, re
 
-import IPython
-# IPython.embed()
+from IPython import embed
+# embed()
 
 import gflags
 import httplib2
@@ -25,7 +25,7 @@ app = Flask(__name__)
 if cfg.secret_key == '':
     print 'configure secret_key!'
     sys.exit(0)
-#app.debug = True
+app.debug = True # FIXME: remove on production
 app.secret_key = cfg.secret_key
 
 #
@@ -63,20 +63,21 @@ def send():
                 'type': request.form['ev_type'],
             }
             fserv = request.form.getlist('ev_services')
-            if 'fixme' in fserv:
+            if u'fixme' in fserv:
                 services.append(send_fixme(data))
-            if 'techup' in fserv:
+            if u'techup' in fserv:
                 services.append(send_techup(data))
-            if 'agendalibre' in fserv:
+            if u'agendalibre' in fserv:
                 services.append(send_agendalibre(data))
-            if 'gcal' in fserv:
+            if u'gcal' in fserv:
                 services.append(send_gcal(data))
-            if 'twitter' in fserv:
+            if u'twitter' in fserv:
                 services.append(send_twitter(data))
-            if 'facebook' in fserv:
+            if u'facebook' in fserv:
                 services.append(send_facebook(data))
         except KeyError, e:
             error = e
+            print e
         return render_template('send.html', data={
             'services': services,
             'error': error
@@ -104,14 +105,14 @@ def send_fixme(data):
         'event_type_id': data['type'],
         'start_date': date_from.format('YYYY-MM-DD HH:mm'),
         'end_date': date_to.format('YYYY-MM-DD HH:mm'),
-        'description': ' '.join(desc[10:]) + '...' if len(desc) > 10 else '', #it's not perfect
-        'summary': ' '.join(desc[:10]),
+        'summary': ' '.join(desc[:10]) + '...' if len(desc) > 10 else '', #it's not perfect
+        'description': ' '.join(desc[10:]),
         'is_event_public': 1,
         'is_active': 1,
         'key': cfg.fixme['civicrm_site_key'],
         'api_key': cfg.fixme['civicrm_api_key'],
     })
-    #IPython.embed()
+    #embed()
     url = 'https://fixme.ch/civicrm/event/info?id=%s' % r.json['id'] if r.json !=None else ''
     return {'name': 'FIXME website', 'url': url}
 
@@ -146,7 +147,7 @@ def send_agendalibre(data):
         '__event_tags': data['tags'].replace(',', ' '),
         '__event_save': 'Valider',
     })
-    #IPython.embed()
+    #embed()
     return {'name': 'Agenda du Libre', 'url': 'http://www.agendadulibre.ch'}
 
 # TECHUP
@@ -191,7 +192,7 @@ def send_techup(data):
         'event[twitter]': data['twitter'],
         'event[tagsText]': data['tags'],
     })
-    #IPython.embed()
+    #embed()
     return {'name': 'Techup', 'url': 'http://techup.ch'}
 
 # GOOGLE
@@ -238,7 +239,7 @@ def send_gcal(data):
 
     evt = service.events()
     r = evt.insert(calendarId=cfg.gcal['calendarId'], body=post).execute()
-    #IPython.embed()
+    #embed()
     return {'name': 'Google Calendar', 'url': r['htmlLink']}
 
 # TWITTER
@@ -270,7 +271,7 @@ def send_facebook(data):
         data['url'] = url
 
     r = requests.post(cfg.facebook['url'], headers={'User-Agent': UA}, data={
-        'message': 'Event: %s, %s %s.-%s %s' % (
+        'message': 'Event: %s, %s %s - %s %s' % (
             data['title'],
             data['date_from'],
             data['time_from'],
@@ -283,9 +284,15 @@ def send_facebook(data):
         #'place': '194766147227135',
         'access_token': cfg.facebook['access_token'],
     })
-    #IPython.embed()
-    _id = r.json()['id'].split('_')[1]
-    return {'name': 'Facebook', 'url': 'https://www.facebook.com/fixmehackerspace/posts/%s' % _id}
+    #embed()
+    error = ''
+    res = r.json()
+    url_id = 'https://www.facebook.com/fixmehackerspace'
+    if 'id' in res:
+        url_id= 'https://www.facebook.com/fixmehackerspace/posts/%s'%r.json()['id'].split('_')[1]
+    elif 'error' in res:
+        error = res['error']['message']
+    return {'name': 'Facebook', 'url': url_id, 'error': error}
 
 #
 #    MAIN
@@ -293,5 +300,4 @@ def send_facebook(data):
 
 if __name__ == '__main__':
     app.run()
-
 
