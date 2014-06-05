@@ -263,6 +263,14 @@ def send_twitter(data):
     return {'name': 'Twitter', 'url': 'https://twitter.com/_fixme/status/%s' % (r['id_str'])}
 
 # FACEBOOK
+@app.route('/fbauth')
+def fbauth():
+    return '<a href="https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=http://localhost:5000/&scope=manage_pages,publish_stream&state=%s">Click here</a>' % (\
+        cfg.facebook['client_id'],
+        #cfg.facebook['client_secret'],
+        'abcdefghifklmnopqrstuvwxyz',
+    )
+
 def send_facebook(data):
 
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
