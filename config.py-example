@@ -36,6 +36,8 @@ fixme = {
 # Facebook
 #http://aseriesoftubes.com/articles/obtaining-facebook-page-access-tokens-the-4-step-program/
 facebook = {
+    'client_id': '',
+    'client_secret': '',
     'access_token': '',
     'url': 'https://graph.facebook.com/fixmehackerspace/feed',
 }
