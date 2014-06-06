@@ -265,7 +265,7 @@ def send_twitter(data):
 # FACEBOOK
 @app.route('/fbauth')
 def fbauth():
-    return '<a href="https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=http://localhost:5000/&scope=manage_pages,publish_stream&state=%s">Click here</a>' % (\
+    return '<a href="https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=https://events.fixme.ch/fbauth&scope=manage_pages,publish_stream&state=%s">Click here</a>' % (\
         cfg.facebook['client_id'],
         #cfg.facebook['client_secret'],
         'abcdefghifklmnopqrstuvwxyz',
