@@ -1,4 +1,5 @@
-<link rel="stylesheet" href="{{ data.css }}">
+{% extends "layout.html" %}
+{% block body %}
 <h1>Ajout d'un event</h1>
 <form method="POST" action="/send">
     <label for="ev_title">Title: </label>
@@ -21,7 +22,7 @@
     <label for="ev_address">Address: </label>
         <input type="text" id="ev_address" name="ev_address" placeholder="Rue de Genève 79" /><br/>
 
-    <label for="ev_url">URL: </label>
+    <label for="ev_url">URL (if left empty, it uses fixme.ch URL): </label>
         <input type="url" id="ev_url" name="ev_url" placeholder="https://fixme.ch/civicrm/event/info?reset=1&id=130" /><br/>
 
     <label for="ev_free">Is the event free ?: </label>
@@ -29,6 +30,17 @@
         <label class="nowidth" for="is_free_yes">yes</label>
         <input type="radio" id="is_free_no" name="ev_free" value="no">
         <label class="nowidth" for="is_free_no">no</label>
+        <br/>
+
+    <label for="ev_type">Type: </label>
+        <select name="ev_type" id="ev_type">
+            <option value="6">Workshop</option>
+            <option value="1">Conference</option>
+            <option value="4">Meeting</option>
+            <option value="7">Movie</option>
+            <option value="8">CTF</option>
+            <option value="9">General Assembly</option>
+        </select>
         <br/>
 
     <label for="ev_tags">Tags: </label>
@@ -44,10 +56,14 @@
     <fieldset>
         <legend>Services</legend>
         <input type="button" id="services_all" value="All" />
-        <input type="button" id="services_none" value="None" /><br/>
+        <input type="button" id="services_none" value="None" />
+        <br/>
+        <input type="checkbox" name="ev_services" id="ev_s_fixme" value="fixme" /><label for="ev_s_fixme" class="nowidth">FIXME website</label>
         <input type="checkbox" name="ev_services" id="ev_s_techup" value="techup" /><label for="ev_s_techup" class="nowidth">Techup</label>
         <input type="checkbox" name="ev_services" id="ev_s_agendalibre" value="agendalibre" /><label for="ev_s_agendalibre" class="nowidth">Agenda du Libre</label>
         <input type="checkbox" name="ev_services" id="ev_s_gcal" value="gcal" /><label for="ev_s_gcal" class="nowidth">Google Calendar</label>
+        <input type="checkbox" name="ev_services" id="ev_s_twitter" value="twitter" /><label for="ev_s_twitter" class="nowidth">Twitter</label>
+        <input type="checkbox" name="ev_services" id="ev_s_facebook" value="facebook" /><label for="ev_s_facebook" class="nowidth">Facebook</label>
     </fieldset>
 
     <br/>
@@ -59,3 +75,4 @@
 </form>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script src="{{ data.js }}"></script>
+{% endblock %}

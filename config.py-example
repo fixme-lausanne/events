@@ -3,11 +3,18 @@
 secret_key = ''
 
 # Twitter
+# https://apps.twitter.com/app/6277528
 twitter = {
-    'consumer_key': '',
-    'consumer_secret': '',
+    'app_key': '',
+    'app_secret': '',
     'access_token': '',
-    'access_token_secret': '',
+    'access_secret': '',
+}
+
+# Techup
+techup = {
+    'techup': '',
+    'techupauth2': '',
 }
 
 # Google
@@ -19,12 +26,16 @@ gcal = {
 }
 
 # Fixme.ch
+# https://fixme.ch/civicrm/ajax/doc/api#explorer
 fixme = {
     'civicrm_site_key': '',
+    'civicrm_api_key': '',
     'civicrm_rest_url': 'https://fixme.ch/sites/all/modules/civicrm/extern/rest.php',
 }
 
 # Facebook
-#facebook = {
-#    'access_token': '',
-#}
+#http://aseriesoftubes.com/articles/obtaining-facebook-page-access-tokens-the-4-step-program/
+facebook = {
+    'access_token': '',
+    'url': 'https://graph.facebook.com/fixmehackerspace/feed',
+}
