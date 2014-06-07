@@ -113,8 +113,13 @@ def send_fixme(data):
         'api_key': cfg.fixme['civicrm_api_key'],
     })
     #embed()
-    url = 'https://fixme.ch/civicrm/event/info?id=%s' % r.json['id'] if r.json !=None else ''
-    return {'name': 'FIXME website', 'url': url}
+    error = ''
+    url = ''
+    if r.json():
+        url = 'https://fixme.ch/civicrm/event/info?id=%s' % r.json['id'] if r.json !=None else ''
+    else:
+        error = r.content
+    return {'name': 'FIXME website', 'url': url, 'error': error}
 
 # Agenda du Libre
 def send_agendalibre(data):
