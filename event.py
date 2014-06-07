@@ -173,6 +173,11 @@ def send_techup(data):
         })
     token = re.findall('name="event\[_token\]" value="(\w*)"', r.content)[0]
 
+    # Address
+    geoloc = ''
+    if '79' in data['address']:
+        geoloc = '{"address_components":[{"long_name":"79","short_name":"79","types":["street_number"]},{"long_name":"Rue de Genève","short_name":"Rue de Genève","types":["route"]},{"long_name":"Lausanne","short_name":"Lausanne","types":["locality","political"]},{"long_name":"Lausanne","short_name":"Lausanne","types":["administrative_area_level_2","political"]},{"long_name":"Vaud","short_name":"VD","types":["administrative_area_level_1","political"]},{"long_name":"Switzerland","short_name":"CH","types":["country","political"]},{"long_name":"1004","short_name":"1004","types":["postal_code"]}],"formatted_address":"Rue de Genève 79, 1004 Lausanne, Switzerland","geometry":{"location":{"lat":46.5247028,"lng":6.613842200000022},"location_type":"ROOFTOP","viewport":{"ta":{"d":46.5233538197085,"b":46.5260517802915},"ga":{"b":6.61249321970854,"d":6.615191180291504}}},"types":["street_address"]}'
+
     # Send event
     r = requests.post('http://techup.ch/submit', headers={'User-Agent': UA}, cookies={
             'techup': cfg.techup['techup'],
@@ -181,6 +186,7 @@ def send_techup(data):
         'is_free': data['free'],
         'event[_token]': token,
         'event[name]': data['title'],
+        'event[geolocation]': geoloc,
         'event[dateFrom][date][day]': date_from.format('D'),
         'event[dateFrom][date][month]': date_from.format('M'),
         'event[dateFrom][date][year]': date_from.format('YYYY'),
