@@ -112,11 +112,11 @@ def send_fixme(data):
         'key': cfg.fixme['civicrm_site_key'],
         'api_key': cfg.fixme['civicrm_api_key'],
     })
-    #embed()
+    embed()
     error = ''
     url = ''
-    if r.json():
-        url = 'https://fixme.ch/civicrm/event/info?id=%s' % r.json['id'] if r.json !=None else ''
+    if r.json() != None:
+        url = 'https://fixme.ch/civicrm/event/info?id=%s' % r.json()['id']
     else:
         error = r.content
     return {'name': 'FIXME website', 'url': url, 'error': error}
