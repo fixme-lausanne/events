@@ -15,7 +15,7 @@ pip install flask requests google-api-python-client \
            markdown
 </pre>
 
-* Create config.py and fill the need fields
+* Create config.py and fill the empty fields
 
 <pre>
 cp config.py-example config.py
