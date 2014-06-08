@@ -95,6 +95,10 @@ def send_fixme(data):
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
 
+    addr = 0
+    if '79' in data['address']:
+        addr = 9
+
     desc = data['description'].split(' ')
     r = requests.post(cfg.fixme['civicrm_rest_url'], headers={'User-Agent': UA}, data={
         'json': 1,
@@ -107,6 +111,7 @@ def send_fixme(data):
         'end_date': date_to.format('YYYY-MM-DD HH:mm'),
         'summary': ' '.join(desc[:10]) + '...' if len(desc) > 10 else '', #it's not perfect
         'description': ' '.join(desc[10:]),
+        'loc_block_id': addr,
         'is_event_public': 1,
         'is_active': 1,
         'key': cfg.fixme['civicrm_site_key'],
