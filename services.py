@@ -2,6 +2,7 @@
 # -*- coding: utf8 -*-
 
 import arrow, requests, json, re
+from markdown import markdown
 
 from IPython import embed
 # embed()
@@ -27,11 +28,14 @@ def send_fixme(data):
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
 
+    desc = re.sub(r'(<!--.*?-->|<[^>]*>)', '', markdown(data['description'].split(' ')))
+    summary = ' '.join(desc[:10]) + '...' if len(desc) > 10 else ''
+    description = ' '.join(desc[10:])
+
     addr = 0
     if '79' in data['address']:
         addr = 9
 
-    desc = data['description'].split(' ')
     r = requests.post(cfg.fixme['civicrm_rest_url'], headers={'User-Agent': cfg.user_agent}, data={
         'json': 1,
         'sequential': 1,
@@ -41,8 +45,8 @@ def send_fixme(data):
         'event_type_id': data['type'],
         'start_date': date_from.format('YYYY-MM-DD HH:mm'),
         'end_date': date_to.format('YYYY-MM-DD HH:mm'),
-        'summary': ' '.join(desc[:10]) + '...' if len(desc) > 10 else '', #it's not perfect
-        'description': ' '.join(desc[10:]),
+        'summary': summary,
+        'description': description,
         'loc_block_id': addr,
         'is_event_public': 1,
         'is_active': 1,
@@ -63,6 +67,7 @@ def send_agendalibre(data):
 
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
+    description = markdown(data['description'])
 
     if url != None:
         data['url'] = url
@@ -79,7 +84,7 @@ def send_agendalibre(data):
         '__event_end_year': date_to.format('YYYY'),
         '__event_end_hour': date_to.format('HH'),
         '__event_end_minute': date_to.format('mm'),
-        '__event_description': data['description'],
+        '__event_description': description,
         '__event_city': data['city'],
         '__event_region': 22,
         '__event_locality': 0, #Locale=0, Nationale=1
@@ -165,9 +170,11 @@ def send_gcal(data):
         user_agent = cfg.user_agent)
     http = auth_goog(FLOW)
     service = build('calendar', 'v3', http=http)
+
+    description = re.sub(r'(<!--.*?-->|<[^>]*>)', '', markdown(data['description']))
     post = {
       "summary": data['title'],
-      "description": data['description'],
+      "description": description,
       "location": '%s, %s %s' % (data['address'], data['cp'], data['city']),
       "start": {
         "dateTime": "%sT%s:00.000+02:00" % (data['date_from'], data['time_from']),
@@ -217,6 +224,7 @@ def send_facebook(data):
     if url != None:
         data['url'] = url
 
+    description = re.sub(r'(<!--.*?-->|<[^>]*>)', '', markdown(data['description']))
     r = requests.post(cfg.facebook['url'], headers={'User-Agent': cfg.user_agent}, data={
         'message': 'Event: %s, %s - %s' % (
             data['title'],
@@ -225,7 +233,7 @@ def send_facebook(data):
         ),
         'link': data['url'],
         'picture': 'https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/400419_313649045338844_1285783717_n.jpg',
-        'description': data['description'],
+        'description': description,
         'access_token': cfg.facebook['access_token'],
     })
     #embed()
