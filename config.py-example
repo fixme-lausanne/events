@@ -33,6 +33,7 @@ gcal = {
     'calendarId': 'sruulkb8vh28dim9bcth8emdm4@group.calendar.google.com',
     'client_id': '',
     'client_secret': '',
+    'timezone': 'Europe/Zurich',
 }
 
 # Fixme.ch

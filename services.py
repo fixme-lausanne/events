@@ -178,11 +178,11 @@ def send_gcal(data):
       "location": '%s, %s %s' % (data['address'], data['cp'], data['city']),
       "start": {
         "dateTime": "%sT%s:00.000+02:00" % (data['date_from'], data['time_from']),
-        "timeZone": "Europe/Zurich"
+        "timeZone": cfg.gcal['timezone'],
       },
       "end": {
         "dateTime": "%sT%s:00.000+02:00" % (data['date_to'], data['time_to']),
-        "timeZone": "Europe/Zurich"
+        "timeZone": cfg.gcal['timezone'],
       },
       "source": {
             "title": "Event link",

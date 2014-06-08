@@ -6,6 +6,8 @@ Publish FIXME events on all the platforms
 Installation
 ------------
 
+* FIXME: There's still some hardcoded values in events.py preventing reuse as is
+
 * Install the latest stable flask and dependencies
 
 <pre>
