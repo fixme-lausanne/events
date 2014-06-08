@@ -5,6 +5,9 @@ label {
 label.nowidth {
     width: auto;
 }
+input[type=submit] {
+    font-weight: bold;
+}
 input[type=submit], 
 input[type=reset] {
     border: 1px solid;
