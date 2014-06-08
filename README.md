@@ -8,14 +8,14 @@ Installation
 
 * Install the latest stable flask and dependencies
 
-   apt-get install python-pip python-httplib2
-   pip install flask requests google-api-python-client \
+    apt-get install python-pip python-httplib2
+    pip install flask requests google-api-python-client \
                oauth2client python-gflags arrow twython \
                markdown
 
 * Create config.py and fill the need fields
 
-  cp config.py-example config.py
+    cp config.py-example config.py
 
 * Apache example configuration for WSGI in /etc/apache2/sites-available/20_events
 
