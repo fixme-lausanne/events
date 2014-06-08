@@ -3,24 +3,24 @@
 <h1>Ajout d'un event</h1>
 <form method="POST" action="/send">
     <label for="ev_title">Title: </label>
-        <input type="text" id="ev_title" name="ev_title" placeholder="DBMS meeting" /><br/>
+        <input type="text" id="ev_title" name="ev_title" placeholder="DBMS meeting" required /><br/>
 
     <label for="ev_date_from">Date from: </label>
-        <input type="date" id="ev_date_from" name="ev_date_from" />
-        <input type="time" id="ev_time_from" name="ev_time_from" /><br/>
+        <input type="date" id="ev_date_from" name="ev_date_from" required />
+        <input type="time" id="ev_time_from" name="ev_time_from" required /><br/>
 
     <label for="ev_date_to">Date to: </label>
-        <input type="date" id="ev_date_to" name="ev_date_to" />
-        <input type="time" id="ev_time_to" name="ev_time_to" /><br/>
+        <input type="date" id="ev_date_to" name="ev_date_to" required />
+        <input type="time" id="ev_time_to" name="ev_time_to" required /><br/>
 
     <label for="ev_cp">Postal code: </label>
-        <input type="text" id="ev_cp" name="ev_cp" placeholder="1004" /><br/>
+        <input type="text" id="ev_cp" name="ev_cp" placeholder="1004" required /><br/>
 
     <label for="ev_city">City: </label>
-        <input type="text" id="ev_city" name="ev_city" placeholder="Lausanne" /><br/>
+        <input type="text" id="ev_city" name="ev_city" placeholder="Lausanne" required /><br/>
 
     <label for="ev_address">Address: </label>
-        <input type="text" id="ev_address" name="ev_address" placeholder="Rue de Genève 79" /><br/>
+        <input type="text" id="ev_address" name="ev_address" placeholder="Rue de Genève 79" required /><br/>
 
     <label for="ev_url">URL (if left empty, it uses fixme.ch URL): </label>
         <input type="url" id="ev_url" name="ev_url" placeholder="https://fixme.ch/civicrm/event/info?reset=1&id=130" /><br/>
@@ -44,10 +44,10 @@
         <br/>
 
     <label for="ev_tags">Tags: </label>
-        <input type="text" id="ev_tags" name="ev_tags" placeholder="fixme, hackerspace, hacker, dbms, database" /><br/>
+        <input type="text" id="ev_tags" name="ev_tags" placeholder="fixme, hackerspace, hacker, dbms, database" required /><br/>
 
     <label class="nowidth" for="ev_description">Description (<a href="http://daringfireball.net/projects/markdown/syntax">Markdown</a>): </label><br/>
-        <textarea id="ev_description" name="ev_description"></textarea><br/>
+        <textarea id="ev_description" name="ev_description" required></textarea><br/>
 
     <input type="hidden" id="ev_twitter" name="ev_twitter" value="_fixme" />
 
