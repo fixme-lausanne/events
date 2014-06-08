@@ -53,7 +53,7 @@ def send_fixme(data):
     error = ''
     url = ''
     if r.json() != None:
-        url = 'https://fixme.ch/civicrm/event/info?id=%s' % r.json()['id']
+        url = '%s?id=%s' % (cfg.fixme['civicrm_event_url'], r.json()['id'])
     else:
         error = r.content
     return {'name': 'FIXME website', 'url': url, 'error': error}
@@ -67,7 +67,7 @@ def send_agendalibre(data):
     if url != None:
         data['url'] = url
 
-    r = requests.post('http://www.agendadulibre.ch/submit.php', headers={'User-Agent': cfg.user_agent}, data={
+    r = requests.post('%s/submit.php' % cfg.agendalibre['url'], headers={'User-Agent': cfg.user_agent}, data={
         '__event_title': data['title'],
         '__event_start_day': date_from.format('DD'),
         '__event_start_month': date_from.format('MM'),
@@ -84,13 +84,13 @@ def send_agendalibre(data):
         '__event_region': 22,
         '__event_locality': 0, #Locale=0, Nationale=1
         '__event_url': data['url'],
-        '__event_contact': 'info@fixme.ch',
-        '__event_submitter': 'info@fixme.ch',
+        '__event_contact': cfg.site_email,
+        '__event_submitter': cfg.site_email,
         '__event_tags': data['tags'].replace(',', ' '),
         '__event_save': 'Valider',
     })
     #embed()
-    return {'name': 'Agenda du Libre', 'url': 'http://www.agendadulibre.ch'}
+    return {'name': 'Agenda du Libre', 'url': cfg.agendalibre['url']}
 
 # TECHUP
 def send_techup(data):
@@ -102,7 +102,7 @@ def send_techup(data):
         data['url'] = url
 
     # Get CSRF cook
-    r = requests.get('http://techup.ch/submit', headers={'User-Agent': cfg.user_agent}, cookies={
+    r = requests.get('%s/submit' % cfg.techup['url'], headers={'User-Agent': cfg.user_agent}, cookies={
             'techup': cfg.techup['techup'],
             'techupauth2': cfg.techup['techupauth2'],
         })
@@ -114,7 +114,7 @@ def send_techup(data):
         geoloc = '{"address_components":[{"long_name":"79","short_name":"79","types":["street_number"]},{"long_name":"Rue de Genève","short_name":"Rue de Genève","types":["route"]},{"long_name":"Lausanne","short_name":"Lausanne","types":["locality","political"]},{"long_name":"Lausanne","short_name":"Lausanne","types":["administrative_area_level_2","political"]},{"long_name":"Vaud","short_name":"VD","types":["administrative_area_level_1","political"]},{"long_name":"Switzerland","short_name":"CH","types":["country","political"]},{"long_name":"1004","short_name":"1004","types":["postal_code"]}],"formatted_address":"Rue de Genève 79, 1004 Lausanne, Switzerland","geometry":{"location":{"lat":46.5247028,"lng":6.613842200000022},"location_type":"ROOFTOP","viewport":{"ta":{"d":46.5233538197085,"b":46.5260517802915},"ga":{"b":6.61249321970854,"d":6.615191180291504}}},"types":["street_address"]}'
 
     # Send event
-    r = requests.post('http://techup.ch/submit', headers={'User-Agent': cfg.user_agent}, cookies={
+    r = requests.post('%s/submit' % cfg.techup['url'], headers={'User-Agent': cfg.user_agent}, cookies={
             'techup': cfg.techup['techup'],
             'techupauth2': cfg.techup['techupauth2'],
         }, data={
@@ -139,7 +139,7 @@ def send_techup(data):
         'event[tagsText]': data['tags'],
     })
     #embed()
-    return {'name': 'Techup', 'url': 'http://techup.ch'}
+    return {'name': 'Techup', 'url': cfg.techup['url']}
 
 # GOOGLE
 def auth_goog(FLOW):
@@ -206,7 +206,7 @@ def send_twitter(data):
         ))
     except Exception, e:
         return {'name': 'Twitter', 'url': '', 'error': e}
-    return {'name': 'Twitter', 'url': 'https://twitter.com/_fixme/status/%s' % (r['id_str'])}
+    return {'name': 'Twitter', 'url': 'https://twitter.com/%s/status/%s' % (cfg.twitter['account'], r['id_str'])}
 
 # FACEBOOK
 def send_facebook(data):
@@ -226,15 +226,14 @@ def send_facebook(data):
         'link': data['url'],
         'picture': 'https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/400419_313649045338844_1285783717_n.jpg',
         'description': data['description'],
-        #'place': '194766147227135',
         'access_token': cfg.facebook['access_token'],
     })
     #embed()
     error = ''
     res = r.json()
-    url_id = 'https://www.facebook.com/fixmehackerspace'
+    url_id = cfg.facebook['url_page']
     if 'id' in res:
-        url_id= 'https://www.facebook.com/fixmehackerspace/posts/%s'%r.json()['id'].split('_')[1]
+        url_id += '/posts/%s' % r.json()['id'].split('_')[1]
     elif 'error' in res:
         error = res['error']['message']
     return {'name': 'Facebook', 'url': url_id, 'error': error}

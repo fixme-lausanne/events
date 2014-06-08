@@ -32,12 +32,14 @@ def home():
 
 @app.route('/fbauth')
 def fbauth():
-    if 'code' in request.args:
+    if 'code' in request.args and request.args['state'] == cfg.facebook['state']:
         return 'Got the code=%s' % request.args['code']
     else:
-        return '<a href="https://www.facebook.com/dialog/oauth?client_id=%s&redirect_uri=https://events.fixme.ch/fbauth&scope=manage_pages,publish_stream&state=%s">Click here</a>' % (\
+        return '<a href="%s?client_id=%s&redirect_uri=%s/fbauth&scope=manage_pages,publish_stream&state=%s">Click here</a>' % (\
+            cfg.facebook['oauth'],
             cfg.facebook['client_id'],
-            'abcdefghifklmnopqrstuvwxyz',
+            cfg.site_url,
+            cfg.facebook['state'],
         )
 
 @app.route('/send', methods=['POST', 'GET'])

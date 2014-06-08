@@ -2,10 +2,18 @@
 
 user_agent = 'fixme-events/0.1'
 secret_key = ''
+site_url = 'https://events.fixme.ch'
+site_email = 'info@fixme.ch'
+
+# Agenda du libre (CH)
+agendalibre = {
+    'url': 'http://www.agendadulibre.ch',
+}
 
 # Twitter
 # https://apps.twitter.com/app/6277528
 twitter = {
+    'account': '_fixme',
     'app_key': '',
     'app_secret': '',
     'access_token': '',
@@ -14,6 +22,7 @@ twitter = {
 
 # Techup
 techup = {
+    'url': 'http://techup.ch',
     'techup': '',
     'techupauth2': '',
 }
@@ -32,13 +41,17 @@ fixme = {
     'civicrm_site_key': '',
     'civicrm_api_key': '',
     'civicrm_rest_url': 'https://fixme.ch/sites/all/modules/civicrm/extern/rest.php',
+    'civicrm_event_url': 'https://fixme.ch/civicrm/event/info',
 }
 
 # Facebook
 #http://aseriesoftubes.com/articles/obtaining-facebook-page-access-tokens-the-4-step-program/
 facebook = {
+    'state': 'xufz2oAAD7WRCmfgGxjBJPXnBlv1TnTV',
     'client_id': '',
     'client_secret': '',
     'access_token': '',
     'url': 'https://graph.facebook.com/fixmehackerspace/feed',
+    'url_page': 'https://facebook.com/fixmehackerspace',
+    'oauth': 'https://www.facebook.com/dialog/oauth',
 }
