@@ -46,3 +46,10 @@ cp config.py-example config.py
 </VirtualHost>
 </pre>
 
+Screenshot
+----------
+
+![form](./screenshot.png)
+
+
+
