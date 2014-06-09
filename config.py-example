@@ -1,9 +1,11 @@
 #!/usr/bin/env python2
+# -*- coding: utf8 -*-
 
 user_agent = 'fixme-events/0.1'
 secret_key = ''
 site_url = 'https://events.fixme.ch'
 site_email = 'info@fixme.ch'
+street_number = '79'
 
 # Agenda du libre (CH)
 agendalibre = {
@@ -25,6 +27,7 @@ techup = {
     'url': 'http://techup.ch',
     'techup': '',
     'techupauth2': '',
+    'geoloc': '{"address_components":[{"long_name":"79","short_name":"79","types":["street_number"]},{"long_name":"Rue de Genève","short_name":"Rue de Genève","types":["route"]},{"long_name":"Lausanne","short_name":"Lausanne","types":["locality","political"]},{"long_name":"Lausanne","short_name":"Lausanne","types":["administrative_area_level_2","political"]},{"long_name":"Vaud","short_name":"VD","types":["administrative_area_level_1","political"]},{"long_name":"Switzerland","short_name":"CH","types":["country","political"]},{"long_name":"1004","short_name":"1004","types":["postal_code"]}],"formatted_address":"Rue de Genève 79, 1004 Lausanne, Switzerland","geometry":{"location":{"lat":46.5247028,"lng":6.613842200000022},"location_type":"ROOFTOP","viewport":{"ta":{"d":46.5233538197085,"b":46.5260517802915},"ga":{"b":6.61249321970854,"d":6.615191180291504}}},"types":["street_address"]}',
 }
 
 # Google
@@ -36,13 +39,15 @@ gcal = {
     'timezone': 'Europe/Zurich',
 }
 
-# Fixme.ch
+# Fixme.ch (CIVICRM)
 # https://fixme.ch/civicrm/ajax/doc/api#explorer
-fixme = {
-    'civicrm_site_key': '',
-    'civicrm_api_key': '',
-    'civicrm_rest_url': 'https://fixme.ch/sites/all/modules/civicrm/extern/rest.php',
-    'civicrm_event_url': 'https://fixme.ch/civicrm/event/info',
+civicrm = {
+    'site_name': 'FIXME Website',
+    'site_key': '',
+    'api_key': '',
+    'rest_url': 'https://fixme.ch/sites/all/modules/civicrm/extern/rest.php',
+    'event_url': 'https://fixme.ch/civicrm/event/info',
+    'default_address_id': 9, #corresponding to config.street_number
 }
 
 # Facebook
@@ -54,5 +59,6 @@ facebook = {
     'access_token': '',
     'url': 'https://graph.facebook.com/fixmehackerspace/feed',
     'url_page': 'https://facebook.com/fixmehackerspace',
+    'url_pic': 'https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/400419_313649045338844_1285783717_n.jpg',
     'oauth': 'https://www.facebook.com/dialog/oauth',
 }

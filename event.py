@@ -66,7 +66,7 @@ def send():
             }
             fserv = request.form.getlist('ev_services')
             if u'fixme' in fserv:
-                services.append(send_fixme(data))
+                services.append(send_civicrm(data))
             if u'techup' in fserv:
                 services.append(send_techup(data))
             if u'agendalibre' in fserv:

@@ -21,8 +21,8 @@ import config as cfg
 #    SERVICES
 #
 
-# Site FIXME
-def send_fixme(data):
+# Site FIXME (CIVICRM)
+def send_civicrm(data):
     global url
 
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
@@ -33,10 +33,10 @@ def send_fixme(data):
     description = ' '.join(desc[10:])
 
     addr = 0
-    if '79' in data['address']:
-        addr = 9
+    if cfg.street_number in data['address']:
+        addr = cfg.civicrm['default_address_id']
 
-    r = requests.post(cfg.fixme['civicrm_rest_url'], headers={'User-Agent': cfg.user_agent}, data={
+    r = requests.post(cfg.civicrm['rest_url'], headers={'User-Agent': cfg.user_agent}, data={
         'json': 1,
         'sequential': 1,
         'entity': 'Event',
@@ -50,17 +50,17 @@ def send_fixme(data):
         'loc_block_id': addr,
         'is_event_public': 1,
         'is_active': 1,
-        'key': cfg.fixme['civicrm_site_key'],
-        'api_key': cfg.fixme['civicrm_api_key'],
+        'key': cfg.civicrm['site_key'],
+        'api_key': cfg.civicrm['api_key'],
     })
     #embed()
     error = ''
     url = ''
     if r.json() != None:
-        url = '%s?id=%s' % (cfg.fixme['civicrm_event_url'], r.json()['id'])
+        url = '%s?id=%s' % (cfg.civicrm['event_url'], r.json()['id'])
     else:
         error = r.content
-    return {'name': 'FIXME website', 'url': url, 'error': error}
+    return {'name': cfg.civicrm['site_name'], 'url': url, 'error': error}
 
 # Agenda du Libre
 def send_agendalibre(data):
@@ -86,7 +86,7 @@ def send_agendalibre(data):
         '__event_end_minute': date_to.format('mm'),
         '__event_description': description,
         '__event_city': data['city'],
-        '__event_region': 22,
+        '__event_region': 22, # Vaud
         '__event_locality': 0, #Locale=0, Nationale=1
         '__event_url': data['url'],
         '__event_contact': cfg.site_email,
@@ -115,8 +115,8 @@ def send_techup(data):
 
     # Address
     geoloc = ''
-    if '79' in data['address']:
-        geoloc = '{"address_components":[{"long_name":"79","short_name":"79","types":["street_number"]},{"long_name":"Rue de Genève","short_name":"Rue de Genève","types":["route"]},{"long_name":"Lausanne","short_name":"Lausanne","types":["locality","political"]},{"long_name":"Lausanne","short_name":"Lausanne","types":["administrative_area_level_2","political"]},{"long_name":"Vaud","short_name":"VD","types":["administrative_area_level_1","political"]},{"long_name":"Switzerland","short_name":"CH","types":["country","political"]},{"long_name":"1004","short_name":"1004","types":["postal_code"]}],"formatted_address":"Rue de Genève 79, 1004 Lausanne, Switzerland","geometry":{"location":{"lat":46.5247028,"lng":6.613842200000022},"location_type":"ROOFTOP","viewport":{"ta":{"d":46.5233538197085,"b":46.5260517802915},"ga":{"b":6.61249321970854,"d":6.615191180291504}}},"types":["street_address"]}'
+    if cfg.street_number in data['address']:
+        geoloc = cfg.techup['geoloc']
 
     # Send event
     r = requests.post('%s/submit' % cfg.techup['url'], headers={'User-Agent': cfg.user_agent}, cookies={
@@ -232,7 +232,7 @@ def send_facebook(data):
             date_to.format('D MMM YYYY HH:ss'),
         ),
         'link': data['url'],
-        'picture': 'https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/400419_313649045338844_1285783717_n.jpg',
+        'picture': cfg.facebook['url_pic'],
         'description': description,
         'access_token': cfg.facebook['access_token'],
     })
