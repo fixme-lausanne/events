@@ -56,7 +56,7 @@ def send_civicrm(data):
     #embed()
     error = ''
     url = ''
-    if r.json() != None:
+    if r.json() != None and 'id' in json():
         url = '%s?id=%s' % (cfg.civicrm['event_url'], r.json()['id'])
     else:
         error = r.content
@@ -95,7 +95,10 @@ def send_agendalibre(data):
         '__event_save': 'Valider',
     })
     #embed()
-    return {'name': 'Agenda du Libre', 'url': cfg.agendalibre['url']}
+    error = ''
+    if r.status_code != 200:
+        error = r.reason
+    return {'name': 'Agenda du Libre', 'url': cfg.agendalibre['url'], 'error': error}
 
 # TECHUP
 def send_techup(data):
@@ -144,7 +147,10 @@ def send_techup(data):
         'event[tagsText]': data['tags'],
     })
     #embed()
-    return {'name': 'Techup', 'url': cfg.techup['url']}
+    error = ''
+    if r.status_code != 200:
+        error = r.reason
+    return {'name': 'Techup', 'url': cfg.techup['url'], 'error': error}
 
 # GOOGLE
 def auth_goog(FLOW):
@@ -193,27 +199,38 @@ def send_gcal(data):
     evt = service.events()
     r = evt.insert(calendarId=cfg.gcal['calendarId'], body=post).execute()
     #embed()
-    return {'name': 'Google Calendar', 'url': r['htmlLink']}
+    error = ''
+    if 'htmlLink' not in r:
+        error = r
+    return {'name': 'Google Calendar', 'url': r['htmlLink'], 'error': error}
 
 # TWITTER
 def send_twitter(data):
+
+    date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
+    date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
+
     twitt = Twython(
         cfg.twitter['app_key'],
         cfg.twitter['app_secret'],
         cfg.twitter['access_token'],
         cfg.twitter['access_secret'],
     )
+
     try:
-        date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
-        date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
-        r=twitt.update_status(status='Event: %s, %s %s' % (
+        r = twitt.update_status(status='Event: %s, %s %s' % (
             data['title'],
             date_from.format('D MMM YYYY HH:ss'),
             data['url'],
         ))
     except Exception, e:
         return {'name': 'Twitter', 'url': '', 'error': e}
-    return {'name': 'Twitter', 'url': 'https://twitter.com/%s/status/%s' % (cfg.twitter['account'], r['id_str'])}
+
+    error = ''
+    if 'id_str' not in r:
+        error = r
+
+    return {'name': 'Twitter', 'url': 'https://twitter.com/%s/status/%s' % (cfg.twitter['account'], r['id_str']), 'error': error}
 
 # FACEBOOK
 def send_facebook(data):
