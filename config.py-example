@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
-user_agent = 'fixme-events/0.1'
+user_agent = 'fixme-events-bot/0.1 (https://wiki.fixme.ch/Events)'
 secret_key = ''
 site_url = 'https://events.fixme.ch'
 site_email = 'info@fixme.ch'
