@@ -11,10 +11,8 @@ Installation
 * Install the latest stable flask and dependencies
 
     ```
-apt-get install python-pip python-httplib2
-pip install flask requests google-api-python-client \
-           oauth2client python-gflags arrow twython \
-           markdown
+sudo apt-get install python-pip python-httplib2
+sudo pip install -r requirements.txt
     ```
 
 * Create config.py and fill the empty fields
