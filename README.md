@@ -46,6 +46,15 @@ pip install flask requests google-api-python-client \
     </VirtualHost>
     ```
 
+TODO
+----
+
+* Implements meetup.com (http://www.meetup.com/meetup_api/)
+* Create a facebook/google plus event lib (as the official APIs dont support event creation)
+* Add other platforms
+* Create unit tests ?? (not easy without posting, must create test calls to API)
+* ...
+
 Screenshot
 ----------
 
