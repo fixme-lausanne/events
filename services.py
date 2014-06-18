@@ -192,6 +192,7 @@ def send_gcal(data):
         client_id = cfg.gcal['client_id'],
         client_secret = cfg.gcal['client_secret'],
         scope = 'https://www.googleapis.com/auth/calendar',
+        redirect_uri = '%s/gcalauth' % cfg.site_url,
         user_agent = cfg.user_agent)
     http = auth_goog(FLOW)
     service = build('calendar', 'v3', http=http)

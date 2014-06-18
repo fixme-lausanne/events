@@ -58,6 +58,22 @@ def fbauth():
             cfg.facebook['state'],
         )
 
+from apiclient.discovery import build
+from oauth2client.client import OAuth2WebServerFlow
+
+@app.route('/gcalauth')
+def gcalauth():
+    FLOW = OAuth2WebServerFlow(
+        client_id = cfg.gcal['client_id'],
+        client_secret = cfg.gcal['client_secret'],
+        scope = 'https://www.googleapis.com/auth/calendar',
+        redirect_uri = '%s/gcalauth' % cfg.site_url,
+        user_agent = cfg.user_agent)
+    http = auth_goog(FLOW)
+    service = build('calendar', 'v3', http=http)
+    #embed()
+    return 'OK'
+
 @app.route('/send', methods=['POST', 'GET'])
 def send():
     error = None
