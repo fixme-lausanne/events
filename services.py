@@ -1,5 +1,5 @@
-#!/usr/bin/env python2
-# -*- coding: utf8 -*-
+##!/usr/bin/env python2
+## -*- coding: utf8 -*-
 
 '''
 This file is part of FIXME Events.
@@ -34,6 +34,8 @@ from oauth2client.tools import run
 
 import config as cfg
 
+url = None
+
 #
 #    SERVICES
 #
@@ -45,7 +47,7 @@ def send_civicrm(data):
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
     date_to = arrow.get('%s %s' % (str(data['date_to']), str(data['time_to'])), 'YYYY-MM-DD HH:mm')
 
-    desc = re.sub(r'(<!--.*?-->|<[^>]*>)', '', markdown(data['description'].split(' ')))
+    desc = re.sub(r'(<!--.*?-->|<[^>]*>)', '', markdown(data['description'])).split(' ')
     summary = ' '.join(desc[:10]) + '...' if len(desc) > 10 else ''
     description = ' '.join(desc[10:])
 
@@ -73,7 +75,7 @@ def send_civicrm(data):
     #embed()
     error = ''
     url = ''
-    if r.json() != None and 'id' in json():
+    if r.json() != None and 'id' in r.json():
         url = '%s?id=%s' % (cfg.civicrm['event_url'], r.json()['id'])
     else:
         error = r.content

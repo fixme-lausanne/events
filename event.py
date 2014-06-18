@@ -27,7 +27,6 @@ import config as cfg
 from IPython import embed
 # embed()
 
-url = None
 app = Flask(__name__)
 if cfg.secret_key == '':
     print 'configure secret_key!'

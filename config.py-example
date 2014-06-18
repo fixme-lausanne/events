@@ -49,6 +49,7 @@ techup = {
 
 # Google
 gplus = {}
+# https://code.google.com/apis/console/
 gcal = {
     'calendarId': 'sruulkb8vh28dim9bcth8emdm4@group.calendar.google.com',
     'client_id': '',
