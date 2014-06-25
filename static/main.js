@@ -24,7 +24,19 @@ function set_services_btn(){
     });
 }
 
+function set_url_required(){
+    var url = $('#ev_url');
+    url.attr('required', 'required');
+    $('#ev_s_fixme').click(function(e){
+        url.removeAttr('required');
+        if(!e.target.checked){
+            url.attr('required', 'required');
+        }
+    });
+}
+
 $(document).ready(function() {
     set_date_picker();
     set_services_btn();
+    set_url_required();
 });
