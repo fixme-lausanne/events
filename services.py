@@ -177,7 +177,7 @@ def auth_goog(FLOW, code=None):
     FLAGS = gflags.FLAGS
 
     if code != None:
-        credentials = flow.step2_exchange(code)
+        credentials = FLOW.step2_exchange(code)
     else:
         storage = Storage('google.dat')
         credentials = storage.get()
