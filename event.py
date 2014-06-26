@@ -24,6 +24,9 @@ import random, sys
 from services import *
 import config as cfg
 
+from apiclient.discovery import build
+from oauth2client.client import OAuth2WebServerFlow
+
 from IPython import embed
 # embed()
 
@@ -57,9 +60,6 @@ def fbauth():
             cfg.site_url,
             cfg.facebook['state'],
         )
-
-from apiclient.discovery import build
-from oauth2client.client import OAuth2WebServerFlow
 
 @app.route('/gcalauth')
 def gcalauth():
