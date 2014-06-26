@@ -72,7 +72,6 @@ def gcalauth():
     if 'code' in request.args:
         code = request.args['code']
         try:
-            credentials = FLOW.step2_exchange(code)
             http = auth_goog(FLOW, code)
             #embed()
             service = build('calendar', 'v3', http=http)
