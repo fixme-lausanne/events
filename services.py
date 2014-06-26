@@ -176,10 +176,10 @@ def send_techup(data):
 def auth_goog(FLOW, code=None):
     FLAGS = gflags.FLAGS
 
+    storage = Storage('google.dat')
     if code != None:
         credentials = FLOW.step2_exchange(code)
     else:
-        storage = Storage('google.dat')
         credentials = storage.get()
     if credentials is None or credentials.invalid == True:
       credentials = run(FLOW, storage)

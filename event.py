@@ -81,7 +81,7 @@ def gcalauth():
     elif 'error' in request.args:
         return request.args['error']
     else:
-        url_redir = FLOW.step1_get_authorize_url()
+        url_redir = FLOW.step1_get_authorize_url('%s/gcalauth' % cfg.site_url)
         return redirect(url_redir)
 
 @app.route('/send', methods=['POST', 'GET'])
