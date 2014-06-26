@@ -97,18 +97,9 @@ def send():
                 'type': request.form['ev_type'],
             }
             fserv = request.form.getlist('ev_services')
-            if u'fixme' in fserv:
-                services.append(send_civicrm(data))
-            if u'techup' in fserv:
-                services.append(send_techup(data))
-            if u'agendalibre' in fserv:
-                services.append(send_agendalibre(data))
-            if u'gcal' in fserv:
-                services.append(send_gcal(data))
-            if u'twitter' in fserv:
-                services.append(send_twitter(data))
-            if u'facebook' in fserv:
-                services.append(send_facebook(data))
+            for service in fserv:
+                if service in smap.keys():
+                    services.append(smap[service](data))
         except KeyError, e:
             error = e
             print e

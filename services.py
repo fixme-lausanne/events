@@ -284,3 +284,12 @@ def send_facebook(data):
         error = res['error']['message']
     return {'name': 'Facebook', 'url': url_id, 'error': error}
 
+
+smap = {
+    u'fixme': send_civicrm,
+    u'techup': send_techup,
+    u'agendalibre': send_agendalibre,
+    u'gcal': send_gcal,
+    u'twitter': send_twitter,
+    u'facebook': send_facebook,
+}
