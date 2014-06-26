@@ -67,10 +67,10 @@ def gcalauth():
         client_id = cfg.gcal['client_id'],
         client_secret = cfg.gcal['client_secret'],
         scope = 'https://www.googleapis.com/auth/calendar',
-        redirect_uri = '%s/gcalauth/' % cfg.site_url,
+        redirect_uri = '%s/gcalauth' % cfg.site_url,
         user_agent = cfg.user_agent)
     if 'code' in request.args:
-        credentials = flow.step2_exchange(code)
+        credentials = FLOW.step2_exchange(code)
         http = auth_goog(FLOW, code)
         service = build('calendar', 'v3', http=http)
         #embed()
