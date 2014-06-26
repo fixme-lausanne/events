@@ -71,10 +71,13 @@ def gcalauth():
         user_agent = cfg.user_agent)
     if 'code' in request.args:
         code = request.args['code']
-        credentials = FLOW.step2_exchange(code)
-        http = auth_goog(FLOW, code)
-        service = build('calendar', 'v3', http=http)
-        #embed()
+        try:
+            credentials = FLOW.step2_exchange(code)
+            http = auth_goog(FLOW, code)
+            #embed()
+            service = build('calendar', 'v3', http=http)
+        except Exception, e:
+            return e
         return 'OK ' + request.args['code']
     elif 'error' in request.args:
         return request.args['error']
