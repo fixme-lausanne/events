@@ -76,7 +76,7 @@ def gcalauth():
             http = auth_goog(FLOW, code)
             #embed()
             service = build('calendar', 'v3', http=http)
-        except Exception, e:
+        except TypeError, e:
             return e
         return 'OK ' + request.args['code']
     elif 'error' in request.args:
