@@ -69,10 +69,16 @@ def gcalauth():
         scope = 'https://www.googleapis.com/auth/calendar',
         redirect_uri = '%s/gcalauth' % cfg.site_url,
         user_agent = cfg.user_agent)
-    http = auth_goog(FLOW)
-    service = build('calendar', 'v3', http=http)
-    #embed()
-    return 'OK'
+    if 'code' in request.args:
+        http = auth_goog(FLOW)
+        service = build('calendar', 'v3', http=http)
+        #embed()
+        return 'OK ' + request.args['code']
+    elif 'error' in request.args:
+        return request.args['error']
+    else:
+        url_redir = FLOW.step1_get_authorize_url()
+        return redirect(url_redir)
 
 @app.route('/send', methods=['POST', 'GET'])
 def send():
