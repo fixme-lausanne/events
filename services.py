@@ -42,6 +42,13 @@ url = None
 #
 
 # Site FIXME (CIVICRM)
+def test_civicrm():
+    r = requests.post(cfg.civicrm['rest_url'], headers={'User-Agent': cfg.user_agent}, data={
+        'key': cfg.civicrm['site_key'],
+        'api_key': cfg.civicrm['api_key'],
+    })
+    pass
+
 def send_civicrm(data):
     global url
 
@@ -83,6 +90,9 @@ def send_civicrm(data):
     return {'name': cfg.civicrm['site_name'], 'url': url, 'error': error}
 
 # Agenda du Libre
+def test_agendalibre():
+    pass
+
 def send_agendalibre(data):
 
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
@@ -121,6 +131,9 @@ def send_agendalibre(data):
     return {'name': 'Agenda du Libre', 'url': cfg.agendalibre['url'], 'error': error}
 
 # TECHUP
+def test_techup():
+    pass
+
 def send_techup(data):
 
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
@@ -173,6 +186,9 @@ def send_techup(data):
     return {'name': 'Techup', 'url': cfg.techup['url'], 'error': error}
 
 # GOOGLE
+def test_goog():
+    pass
+
 def auth_goog(FLOW):
     FLAGS = gflags.FLAGS
 
@@ -186,6 +202,9 @@ def auth_goog(FLOW):
     return http
 
 # Calendar
+def test_gcal():
+    pass
+
 def send_gcal(data):
     if url != None:
         data['url'] = url
@@ -226,6 +245,8 @@ def send_gcal(data):
     return {'name': 'Google Calendar', 'url': r['htmlLink'], 'error': error}
 
 # TWITTER
+def test_twitter():
+    pass
 def send_twitter(data):
 
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
@@ -254,6 +275,9 @@ def send_twitter(data):
     return {'name': 'Twitter', 'url': 'https://twitter.com/%s/status/%s' % (cfg.twitter['account'], r['id_str']), 'error': error}
 
 # FACEBOOK
+def test_facebook():
+    pass
+
 def send_facebook(data):
 
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
