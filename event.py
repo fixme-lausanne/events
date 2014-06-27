@@ -24,6 +24,9 @@ import random, sys
 from services import *
 import config as cfg
 
+from apiclient.discovery import build
+from oauth2client.client import OAuth2WebServerFlow
+
 from IPython import embed
 # embed()
 
@@ -58,9 +61,6 @@ def fbauth():
             cfg.facebook['state'],
         )
 
-from apiclient.discovery import build
-from oauth2client.client import OAuth2WebServerFlow
-
 @app.route('/gcalauth')
 def gcalauth():
     FLOW = OAuth2WebServerFlow(
@@ -69,10 +69,20 @@ def gcalauth():
         scope = 'https://www.googleapis.com/auth/calendar',
         redirect_uri = '%s/gcalauth' % cfg.site_url,
         user_agent = cfg.user_agent)
-    http = auth_goog(FLOW)
-    service = build('calendar', 'v3', http=http)
-    #embed()
-    return 'OK'
+    if 'code' in request.args:
+        code = request.args['code']
+        try:
+            http = auth_goog(FLOW, code)
+            #embed()
+            service = build('calendar', 'v3', http=http)
+        except TypeError, e:
+            return e
+        return 'OK ' + request.args['code']
+    elif 'error' in request.args:
+        return request.args['error']
+    else:
+        url_redir = FLOW.step1_get_authorize_url('%s/gcalauth' % cfg.site_url)
+        return redirect(url_redir)
 
 @app.route('/send', methods=['POST', 'GET'])
 def send():
