@@ -76,6 +76,7 @@ facebook = {
     'client_secret': '',
     'access_token': '',
     'url': 'https://graph.facebook.com/fixmehackerspace/feed',
+    'url_auth': 'https://graph.facebook.com/oauth/access_token',
     'url_page': 'https://facebook.com/fixmehackerspace',
     'url_pic': 'https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-xfa1/t1.0-9/400419_313649045338844_1285783717_n.jpg',
     'oauth': 'https://www.facebook.com/dialog/oauth',
