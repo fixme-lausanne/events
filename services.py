@@ -272,7 +272,17 @@ def send_gcal(data):
 
 # TWITTER
 def test_twitter():
-    pass
+    twitt = Twython(
+        cfg.twitter['app_key'],
+        cfg.twitter['app_secret'],
+        cfg.twitter['access_token'],
+        cfg.twitter['access_secret'],
+    )
+    s = twitt.search(q='fixme')
+    if s != None and s.items() > 0:
+        return True
+    return False
+
 def send_twitter(data):
 
     date_from = arrow.get('%s %s' % (str(data['date_from']), str(data['time_from'])), 'YYYY-MM-DD HH:mm')
