@@ -20,6 +20,7 @@ along with FIXME Events. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 from flask import Flask, render_template, request, url_for, redirect, session
+from urllib import urlencode
 import random, sys
 from services import *
 import config as cfg
@@ -52,7 +53,14 @@ def home():
 @app.route('/fbauth')
 def fbauth():
     if 'code' in request.args and request.args['state'] == cfg.facebook['state']:
-        return 'Got the code=%s' % request.args['code']
+        data = {
+            'client_id': cfg.facebook['client_id'],
+            'client_secret': cfg.facebook['client_secret'],
+            'redirect_uri': cfg.site_url,
+            'code': request.args['code'],
+        }
+        r = requests.get(cfg.facebook['url_auth'] + '?%s' % urlencode(data) , headers={'User-Agent': cfg.user_agent})
+        return r.content
     else:
         return '<a href="%s?client_id=%s&redirect_uri=%s/fbauth&scope=manage_pages,publish_stream&state=%s">Click here</a>' % (\
             cfg.facebook['oauth'],
