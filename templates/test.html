@@ -21,10 +21,10 @@ along with FIXME Events.  If not, see <http://www.gnu.org/licenses/>.
 {% for service in data.services %}
     <li>
         <label>{{ service.name }}</label>
-        {% if service.status %}
+        {% if service.status is sameas true %}
             <span style="color:green">OK</span>
         {% else %}
-            <span style="color:red">ERROR</span>
+            <span style="color:red">{{ service.status }}</span>
         {% endif %}
     </li>
 {% endfor %}

@@ -57,8 +57,8 @@ def test_civicrm():
         if 'is_error' in r.json() and r.json()['is_error'] == 1:
             return False
     except Exception, e:
-        print e
-    return False
+        return e
+    return r.json()
 
 def send_civicrm(data):
     global url
@@ -105,7 +105,7 @@ def test_agendalibre():
     r = requests.get('%s/submit.php' % cfg.agendalibre['url'], headers={'User-Agent': cfg.user_agent})
     if r.status_code == 200:
         return True
-    return False
+    return r.content
 
 def send_agendalibre(data):
 
@@ -152,7 +152,7 @@ def test_techup():
         })
     if r.status_code == 200 and '/user/%s' % cfg.twitter['account'] in r.content:
         return True
-    return False
+    return r.content
 
 def send_techup(data):
 
@@ -238,7 +238,7 @@ def test_gcal():
     service = build('calendar', 'v3', http=http)
     if service != None:
         return True
-    return False
+    return http
 
 def send_gcal(data):
     if url != None:
@@ -284,7 +284,7 @@ def test_twitter():
     s = twitt.search(q='fixme')
     if s != None and s.items() > 0:
         return True
-    return False
+    return s
 
 def send_twitter(data):
 
@@ -320,7 +320,7 @@ def test_facebook():
     })
     if r != None and r.status_code == 200:
         return True
-    return False
+    return r.json()['error']['message']
 
 def send_facebook(data):
 
