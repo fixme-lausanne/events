@@ -102,7 +102,10 @@ def send_civicrm(data):
 
 # Agenda du Libre
 def test_agendalibre():
-    pass
+    r = requests.get('%s/submit.php' % cfg.agendalibre['url'], headers={'User-Agent': cfg.user_agent})
+    if r.status_code == 200:
+        return True
+    return False
 
 def send_agendalibre(data):
 
@@ -143,7 +146,13 @@ def send_agendalibre(data):
 
 # TECHUP
 def test_techup():
-    pass
+    r = requests.get('%s/submit' % cfg.techup['url'], headers={'User-Agent': cfg.user_agent}, cookies={
+            'techup': cfg.techup['techup'],
+            'techupauth2': cfg.techup['techupauth2'],
+        })
+    if r.status_code == 200 and '/user/%s' % cfg.twitter['account'] in r.content:
+        return True
+    return False
 
 def send_techup(data):
 
