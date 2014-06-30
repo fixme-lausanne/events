@@ -43,11 +43,22 @@ url = None
 
 # Site FIXME (CIVICRM)
 def test_civicrm():
-    r = requests.post(cfg.civicrm['rest_url'], headers={'User-Agent': cfg.user_agent}, data={
-        'key': cfg.civicrm['site_key'],
-        'api_key': cfg.civicrm['api_key'],
-    })
-    pass
+    try:
+        r = requests.post(cfg.civicrm['rest_url'], headers={'User-Agent': cfg.user_agent}, data={
+            'json': 1,
+            'sequential': 1,
+            'entity': 'Event',
+            'action': 'getcount',
+            'key': cfg.civicrm['site_key'],
+            'api_key': cfg.civicrm['api_key'],
+        })
+        if 'result' in r.json():
+            return True
+        if 'is_error' in r.json() and r.json()['is_error'] == 1:
+            return False
+    except Exception, e:
+        print e
+    return False
 
 def send_civicrm(data):
     global url
