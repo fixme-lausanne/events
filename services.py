@@ -206,12 +206,12 @@ def send_techup(data):
     return {'name': 'Techup', 'url': cfg.techup['url'], 'error': error}
 
 # GOOGLE
-def get_flow():
+def get_flow(url=cfg.site_url):
     return OAuth2WebServerFlow(
         client_id = cfg.gcal['client_id'],
         client_secret = cfg.gcal['client_secret'],
         scope = 'https://www.googleapis.com/auth/calendar',
-        redirect_uri = '%s/gcalauth' % cfg.site_url,
+        redirect_uri = '%s/gcalauth' % url,
         access_type = 'offline',
         approval_prompt = 'force',
         user_agent = cfg.user_agent)
