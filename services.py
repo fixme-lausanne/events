@@ -351,10 +351,10 @@ def send_facebook(data):
 
 
 smap = {
-    u'fixme': send_civicrm,
-    u'techup': send_techup,
-    u'agendalibre': send_agendalibre,
-    u'gcal': send_gcal,
-    u'twitter': send_twitter,
-    u'facebook': send_facebook,
+    u'fixme': [send_civicrm, test_civicrm],
+    u'techup': [send_techup, test_techup],
+    u'agendalibre': [send_agendalibre, test_agendalibre],
+    u'gcal': [send_gcal, test_gcal],
+    u'twitter': [send_twitter, test_twitter],
+    u'facebook': [send_facebook, test_facebook],
 }

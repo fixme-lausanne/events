@@ -50,6 +50,17 @@ def home():
         'css': url_for('static', filename='style.css'),
     })
 
+@app.route('/test')
+def test():
+    res = []
+    for s in smap.keys():
+        r = smap[s][1]()
+        res.append({'name': s, 'status': r})
+    return render_template('test.html', data={
+        'services': res,
+        'css': url_for('static', filename='style.css'),
+    })
+
 @app.route('/fbauth')
 @app.route('/fbauth/')
 def fbauth():
@@ -112,7 +123,7 @@ def send():
             fserv = request.form.getlist('ev_services')
             for service in fserv:
                 if service in smap.keys():
-                    services.append(smap[service](data))
+                    services.append(smap[service][0](data))
         except KeyError, e:
             error = e
             print e
