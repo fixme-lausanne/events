@@ -206,9 +206,8 @@ def send_techup(data):
     return {'name': 'Techup', 'url': cfg.techup['url'], 'error': error}
 
 # GOOGLE
-def auth_goog(code=None):
-    FLAGS = gflags.FLAGS
-    FLOW = OAuth2WebServerFlow(
+def get_flow():
+    return OAuth2WebServerFlow(
         client_id = cfg.gcal['client_id'],
         client_secret = cfg.gcal['client_secret'],
         scope = 'https://www.googleapis.com/auth/calendar',
@@ -216,6 +215,10 @@ def auth_goog(code=None):
         access_type = 'offline',
         approval_prompt = 'force',
         user_agent = cfg.user_agent)
+
+def auth_goog(code=None):
+    FLAGS = gflags.FLAGS
+    FLOW = get_flow()
 
     storage = Storage('google.dat')
     if code != None:
