@@ -51,21 +51,22 @@ def home():
     })
 
 @app.route('/fbauth')
+@app.route('/fbauth/')
 def fbauth():
     if 'code' in request.args and request.args['state'] == cfg.facebook['state']:
         data = {
             'client_id': cfg.facebook['client_id'],
             'client_secret': cfg.facebook['client_secret'],
-            'redirect_uri': cfg.site_url + '/fbauth',
+            'redirect_uri': cfg.site_url + '/fbauth/',
             'code': request.args['code'],
         }
         r = requests.get(cfg.facebook['url_auth'] + '?%s' % urlencode(data) , headers={'User-Agent': cfg.user_agent})
-        return r.content['message']
+        return r.content
     else:
         return '<a href="%s?client_id=%s&redirect_uri=%s&scope=manage_pages,publish_stream&state=%s">Click here</a>' % (\
             cfg.facebook['oauth'],
             cfg.facebook['client_id'],
-            cfg.site_url + '/fbauth',
+            cfg.site_url + '/fbauth/',
             cfg.facebook['state'],
         )
 
