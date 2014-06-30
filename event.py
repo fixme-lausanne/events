@@ -56,16 +56,16 @@ def fbauth():
         data = {
             'client_id': cfg.facebook['client_id'],
             'client_secret': cfg.facebook['client_secret'],
-            'redirect_uri': cfg.site_url,
+            'redirect_uri': cfg.site_url + '/fbauth',
             'code': request.args['code'],
         }
         r = requests.get(cfg.facebook['url_auth'] + '?%s' % urlencode(data) , headers={'User-Agent': cfg.user_agent})
-        return r.content
+        return r.content['message']
     else:
-        return '<a href="%s?client_id=%s&redirect_uri=%s/fbauth&scope=manage_pages,publish_stream&state=%s">Click here</a>' % (\
+        return '<a href="%s?client_id=%s&redirect_uri=%s&scope=manage_pages,publish_stream&state=%s">Click here</a>' % (\
             cfg.facebook['oauth'],
             cfg.facebook['client_id'],
-            cfg.site_url,
+            cfg.site_url + '/fbauth',
             cfg.facebook['state'],
         )
 
