@@ -315,7 +315,6 @@ def test_facebook():
     r = requests.post(cfg.facebook['url'], headers={'User-Agent': cfg.user_agent}, data={
         'access_token': cfg.facebook['access_token'],
     })
-    embed()
     if r != None and r.status_code == 200:
         return True
     return False
