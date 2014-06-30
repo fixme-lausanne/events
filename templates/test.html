@@ -19,7 +19,14 @@ along with FIXME Events.  If not, see <http://www.gnu.org/licenses/>.
 <h2>Test services APIs:</h2>
 <ul>
 {% for service in data.services %}
-    <li><label>{{ service.name }}</label> {{ service.status}}</li>
+    <li>
+        <label>{{ service.name }}</label>
+        {% if service.status %}
+            <span style="color:green">OK</span>
+        {% else %}
+            <span style="color:red">ERROR</span>
+        {% endif %}
+    </li>
 {% endfor %}
 </ul>
 {% endblock %}
