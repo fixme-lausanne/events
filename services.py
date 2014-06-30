@@ -32,6 +32,7 @@ from apiclient.discovery import build
 from oauth2client.file import Storage
 from oauth2client.client import OAuth2WebServerFlow
 from oauth2client.tools import run
+from oauth2client.client import SignedJwtAssertionCredentials
 
 import config as cfg
 
@@ -217,16 +218,11 @@ def get_flow(url=cfg.site_url):
         user_agent = cfg.user_agent)
 
 def auth_goog(code=None):
-    FLAGS = gflags.FLAGS
-    FLOW = get_flow()
-
-    storage = Storage('google.dat')
-    if code != None:
-        credentials = FLOW.step2_exchange(code)
-    else:
-        credentials = storage.get()
-    if credentials is None or credentials.invalid == True:
-      credentials = run(FLOW, storage)
+    credentials = SignedJwtAssertionCredentials(
+        cfg.gcal['client_id'],
+        cfg.gcal['client_key'],
+        scope = 'https://www.googleapis.com/auth/calendar',
+    )
 
     http = httplib2.Http()
     http = credentials.authorize(http)
