@@ -207,10 +207,22 @@ def send_techup(data):
 
 # GOOGLE
 def test_goog():
-    pass
+    http = auth_goog()
+    service = build('calendar', 'v3', http=http)
+    if service != None:
+        return True
+    return False
 
-def auth_goog(FLOW, code=None):
+def auth_goog(code=None):
     FLAGS = gflags.FLAGS
+    FLOW = OAuth2WebServerFlow(
+        client_id = cfg.gcal['client_id'],
+        client_secret = cfg.gcal['client_secret'],
+        scope = 'https://www.googleapis.com/auth/calendar',
+        redirect_uri = '%s/gcalauth' % cfg.site_url,
+        access_type = 'offline',
+        approval_prompt = 'force',
+        user_agent = cfg.user_agent)
 
     storage = Storage('google.dat')
     if code != None:
@@ -231,13 +243,7 @@ def test_gcal():
 def send_gcal(data):
     if url != None:
         data['url'] = url
-    FLOW = OAuth2WebServerFlow(
-        client_id = cfg.gcal['client_id'],
-        client_secret = cfg.gcal['client_secret'],
-        scope = 'https://www.googleapis.com/auth/calendar',
-        redirect_uri = '%s/gcalauth' % cfg.site_url,
-        user_agent = cfg.user_agent)
-    http = auth_goog(FLOW)
+    http = auth_goog()
     service = build('calendar', 'v3', http=http)
 
     description = re.sub(r'(<!--.*?-->|<[^>]*>)', '', markdown(data['description']))

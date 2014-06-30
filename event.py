@@ -63,16 +63,10 @@ def fbauth():
 
 @app.route('/gcalauth')
 def gcalauth():
-    FLOW = OAuth2WebServerFlow(
-        client_id = cfg.gcal['client_id'],
-        client_secret = cfg.gcal['client_secret'],
-        scope = 'https://www.googleapis.com/auth/calendar',
-        redirect_uri = '%s/gcalauth' % cfg.site_url,
-        user_agent = cfg.user_agent)
     if 'code' in request.args:
         code = request.args['code']
         try:
-            http = auth_goog(FLOW, code)
+            http = auth_goog(code)
             #embed()
             service = build('calendar', 'v3', http=http)
         except TypeError, e:
