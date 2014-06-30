@@ -206,13 +206,6 @@ def send_techup(data):
     return {'name': 'Techup', 'url': cfg.techup['url'], 'error': error}
 
 # GOOGLE
-def test_goog():
-    http = auth_goog()
-    service = build('calendar', 'v3', http=http)
-    if service != None:
-        return True
-    return False
-
 def auth_goog(code=None):
     FLAGS = gflags.FLAGS
     FLOW = OAuth2WebServerFlow(
@@ -238,7 +231,11 @@ def auth_goog(code=None):
 
 # Calendar
 def test_gcal():
-    pass
+    http = auth_goog()
+    service = build('calendar', 'v3', http=http)
+    if service != None:
+        return True
+    return False
 
 def send_gcal(data):
     if url != None:
