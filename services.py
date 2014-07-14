@@ -213,7 +213,17 @@ def get_gauth(url=cfg.site_url):
         cfg.gcal['client_email'],
         key,
         redirect_uri = '%sgcalauth' % url,
-        scope='https://www.googleapis.com/auth/calendar')
+        access_type = 'offline',
+        approval_prompt = 'force',
+        user_agent = cfg.user_agent)
+
+def auth_goog(code=None):
+    credentials = SignedJwtAssertionCredentials(
+        cfg.gcal['client_id'],
+        cfg.gcal['client_key'],
+        scope = 'https://www.googleapis.com/auth/calendar',
+    )
+
     http = httplib2.Http()
     http = credentials.authorize(http)
 
