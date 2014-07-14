@@ -3,3 +3,4 @@ config.py
 *.swp
 google.dat
 calendar.dat
+key.p12

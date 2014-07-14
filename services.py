@@ -29,9 +29,7 @@ import gflags
 import httplib2
 
 from apiclient.discovery import build
-from oauth2client.file import Storage
-from oauth2client.client import OAuth2WebServerFlow
-from oauth2client.tools import run
+from oauth2client.client import SignedJwtAssertionCredentials
 
 import config as cfg
 
@@ -206,45 +204,36 @@ def send_techup(data):
     return {'name': 'Techup', 'url': cfg.techup['url'], 'error': error}
 
 # GOOGLE
-def get_flow(url=cfg.site_url):
-    return OAuth2WebServerFlow(
-        client_id = cfg.gcal['client_id'],
-        client_secret = cfg.gcal['client_secret'],
-        scope = 'https://www.googleapis.com/auth/calendar',
+def get_gauth(url=cfg.site_url):
+    f = file('key.p12', 'rb')
+    key = f.read()
+    f.close()
+
+    credentials = SignedJwtAssertionCredentials(
+        cfg.gcal['client_email'],
+        key,
         redirect_uri = '%sgcalauth' % url,
-        access_type = 'offline',
-        approval_prompt = 'force',
-        user_agent = cfg.user_agent)
-
-def auth_goog(code=None):
-    FLAGS = gflags.FLAGS
-    FLOW = get_flow()
-
-    storage = Storage('google.dat')
-    if code != None:
-        credentials = FLOW.step2_exchange(code)
-    else:
-        credentials = storage.get()
-    if credentials is None or credentials.invalid == True:
-      credentials = run(FLOW, storage)
-
+        scope='https://www.googleapis.com/auth/calendar')
     http = httplib2.Http()
     http = credentials.authorize(http)
-    return http
+
+    return build("calendar", "v3", http=http), http
 
 # Calendar
 def test_gcal():
-    http = auth_goog()
-    service = build('calendar', 'v3', http=http)
-    if service != None:
-        return True
-    return http
+    try:
+        service, http = get_gauth()
+        if service != None:
+            events = service.events().list(calendarId=cfg.gcal['calendarId']).execute(http=http)
+            if events != None:
+                return True
+    except:
+        pass
+    return False
 
 def send_gcal(data):
     if url != None:
         data['url'] = url
-    http = auth_goog()
-    service = build('calendar', 'v3', http=http)
 
     description = re.sub(r'(<!--.*?-->|<[^>]*>)', '', markdown(data['description']))
     post = {
@@ -265,13 +254,20 @@ def send_gcal(data):
       },
     }
 
-    evt = service.events()
-    r = evt.insert(calendarId=cfg.gcal['calendarId'], body=post).execute()
-    #embed()
     error = ''
-    if 'htmlLink' not in r:
+    r = None
+    try:
+        service, http = get_gauth()
+        r = service.events().insert(calendarId=cfg.gcal['calendarId'], body=post).execute(http=http)
+    except Exception, e:
+        error = json.loads(e.content)['error']['message']
+
+    link = ''
+    if r!= None and 'htmlLink' in r:
+        link = r['htmlLink']
+    elif r != None:
         error = r
-    return {'name': 'Google Calendar', 'url': r['htmlLink'], 'error': error}
+    return {'name': 'Google Calendar', 'url': link, 'error': error}
 
 # TWITTER
 def test_twitter():

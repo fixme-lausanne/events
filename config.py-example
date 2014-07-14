@@ -50,10 +50,10 @@ techup = {
 # Google
 gplus = {}
 # https://code.google.com/apis/console/
+# Create a service account and save the key to key.p12
 gcal = {
     'calendarId': 'sruulkb8vh28dim9bcth8emdm4@group.calendar.google.com',
-    'client_id': '',
-    'client_secret': '',
+    'client_email': '',
     'timezone': 'Europe/Zurich',
 }
 
