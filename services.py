@@ -28,6 +28,7 @@ from IPython import embed
 import gflags
 import httplib2
 
+from apiclient.http import HttpError
 from apiclient.discovery import build
 from oauth2client.client import SignedJwtAssertionCredentials
 
@@ -213,15 +214,8 @@ def get_gauth(url=cfg.site_url):
         cfg.gcal['client_email'],
         key,
         redirect_uri = '%sgcalauth' % url,
-        access_type = 'offline',
-        approval_prompt = 'force',
-        user_agent = cfg.user_agent)
-
-def auth_goog(code=None):
-    credentials = SignedJwtAssertionCredentials(
-        cfg.gcal['client_id'],
-        cfg.gcal['client_key'],
         scope = 'https://www.googleapis.com/auth/calendar',
+        user_agent = cfg.user_agent,
     )
 
     http = httplib2.Http()
@@ -269,8 +263,11 @@ def send_gcal(data):
     try:
         service, http = get_gauth()
         r = service.events().insert(calendarId=cfg.gcal['calendarId'], body=post).execute(http=http)
-    except Exception, e:
-        error = json.loads(e.content)['error']['message']
+    except HttpError, e:
+        if e.content:
+            error = json.loads(e.content)['error']['message']
+        else:
+            error = e
 
     link = ''
     if r!= None and 'htmlLink' in r:
