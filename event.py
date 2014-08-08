@@ -19,7 +19,7 @@ You should have received a copy of the GNU General Public License
 along with FIXME Events. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-from flask import Flask, render_template, request, url_for, redirect, session
+from flask import Flask, render_template, request, Response, url_for, redirect, session
 from urllib import urlencode
 import random, sys
 from services import *
@@ -52,14 +52,22 @@ def home():
 
 @app.route('/test')
 def test():
-    res = []
-    for s in smap.keys():
-        r = smap[s][1]()
-        res.append({'name': s, 'status': r})
-    return render_template('test.html', data={
-        'services': res,
-        'css': url_for('static', filename='style.css'),
-    })
+    if 'service' in request.args and request.args['service'] in smap.keys():
+        svc = request.args['service']
+        return Response(json.dumps({
+            'name': svc,
+            'status': smap[svc][1](),
+        }), mimetype='application/json')
+        pass
+    else:
+        res = []
+        for s in smap.keys():
+            r = smap[s][1]()
+            res.append({'name': s, 'status': r})
+        return render_template('test.html', data={
+            'services': res,
+            'css': url_for('static', filename='style.css'),
+        })
 
 @app.route('/fbauth')
 @app.route('/fbauth/')
