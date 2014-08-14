@@ -65,7 +65,7 @@ civicrm = {
     'api_key': '',
     'rest_url': 'https://fixme.ch/sites/all/modules/civicrm/extern/rest.php',
     'event_url': 'https://fixme.ch/civicrm/event/info',
-    'default_address_id': 9, #corresponding to config.street_number
+    'default_address_id': 18, #corresponding to config.street_number
 }
 
 # Facebook
