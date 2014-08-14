@@ -304,7 +304,7 @@ def send_twitter(data):
     try:
         r = twitt.update_status(status='Event: %s, %s %s' % (
             data['title'],
-            date_from.format('D MMM YYYY HH:ss'),
+            date_from.format('D MMM YYYY HH:mm'),
             data['url'],
         ))
     except Exception, e:
@@ -337,8 +337,8 @@ def send_facebook(data):
     r = requests.post(cfg.facebook['url'], headers={'User-Agent': cfg.user_agent}, data={
         'message': 'Event: %s, %s - %s' % (
             data['title'],
-            date_from.format('D MMM YYYY HH:ss'),
-            date_to.format('D MMM YYYY HH:ss'),
+            date_from.format('D MMM YYYY HH:mm'),
+            date_to.format('D MMM YYYY HH:mm'),
         ),
         'link': data['url'],
         'picture': cfg.facebook['url_pic'],
